@@ -1,0 +1,152 @@
+
+<div class="my-3 my-md-5">
+    <div class="container">
+      <div class="page-header">
+        <h1 class="page-title">
+          Catagory List
+        </h1>
+      </div>
+      <div>
+          <button class="btn btn-success" data-toggle="modal" data-target="#create-catagory-model"><i class="fa fa-plus" aria-hidden="true"></i> Create new catagory</button>
+      </div>
+      <br>
+      <!-- Custom Success/Error Message -->
+      <div *ngIf="message" [ngClass]="messageClass">
+          <button type="button" class="close" (click)="removeMessage()"></button>
+          {{ message }}
+      </div>
+      
+      <div class="row row-cards row-deck">
+        <div class="col-12">
+          <div class="card">
+            <div class="table-responsive">
+              <!-- Table display list catagory -->
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="text-center" scope="col">No</th>
+                      <th class="text-center" scope="col">Catagory Name</th>
+                      <th class="text-center" scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let catagory of listCatagory; index as i">
+                        <th class="text-center" scope="row">{{ i*page + 1 }}</th>
+                        <td class="text-center">{{ catagory.name }}</td>
+                        <td class="action text-center">
+                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#update-catagory-model" (click)="selectCatagory(catagory, 'edit')">Edit</button>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectCatagory(catagory, 'delete')">Delete</button>
+                        </td>
+                      </tr>
+                  </tbody>
+                </table>
+                <!-- End table -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Pagination -->
+    <div *ngIf="pages > 1">
+      <ul class="pagination justify-content-center">
+          <li *ngIf="page > 0" class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li *ngIf="page >= 2" class="page-item"><a class="page-link" href="#">{{ page - 2 }}</a></li>
+          <li *ngIf="page >= 1" class="page-item"><a class="page-link" href="#">{{ page - 1 }}</a></li>
+          <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+          <li *ngIf="page < pages - 2" class="page-item"><a class="page-link" href="#">{{ page + 1 }}</a></li>
+          <li *ngIf="page < pages - 1" class="page-item"><a class="page-link" href="#">{{ page + 2 }}</a></li>
+          <li *ngIf="page < pages" class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </div>
+    <!-- End pagination -->
+  </div>
+  
+  <!-- The Create Catagory Model -->
+  <div class="modal" id="create-catagory-model">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Create new catagory</h4>
+          <button type="button" class="close" data-dismiss="modal"></button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- form create catagory -->
+          <form [formGroup]="formCreateCatagory" (submit)="onSumbitCreateCatagory()">
+            <div class="form-group">
+              <label for="name">CatagoryName</label>
+              <div [ngClass]="{'has-error': (formCreateCatagory.controls.name.errors && formCreateCatagory.controls.name.dirty) || (!catagoryNameValid && formCreateCatagory.controls.name.value), 'has-success': !formCreateCatagory.controls.name.errors && catagoryNameValid}">
+                <input [ngClass]="{'state-valid': !formCreateCatagory.controls.name.errors && nameValid}" type="text" name="name" class="form-control" autocomplete="off" placeholder="*name" formControlName="name"
+                  (keyup)="checkCatagoryName('create')">
+                  <ul class="help-block">
+                    <li *ngIf="formCreateCatagory.controls.name.errors?.required && formCreateCatagory.controls.name.dirty">This field is required</li>
+                    <li *ngIf="formCreateCatagory.controls.name.errors?.minlength && formCreateCatagory.controls.name.value || formCreateCatagory.controls.name.errors?.maxlength && formCreateCatagory.controls.name.value ">Catagory's name must be at least 2 characters but no more than 30</li>
+                    <li *ngIf="catagoryNameMessage && formCreateCatagory.controls.name.valid">{{ catagoryNameMessage }}</li>
+                  </ul>
+              </div>
+            </div>
+            <input  [disabled]="!formCreateCatagory.valid || !catagoryNameValid || proccessing" type="submit" class="btn btn-primary" value="Submit">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Crete Catagory Model -->
+  
+  <!-- Update Catagory Model -->
+  <div class="modal" id="update-catagory-model">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Update Catagory</h4>
+          <button type="button" class="close" data-dismiss="modal"></button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- form update catagory -->
+          <form [formGroup]="formUpdateCatagory" (submit)="onSumbitUpdateCatagory()">
+            <div class="form-group">
+              <label for="name">CatagoryName</label>
+              <div [ngClass]="{'has-error': (formUpdateCatagory.controls.name.errors && formUpdateCatagory.controls.name.dirty) || (!catagoryNameValid && formUpdateCatagory.controls.name.value), 'has-success': !formUpdateCatagory.controls.name.errors && catagoryNameValid}">
+                <input [ngClass]="{'state-valid': !formUpdateCatagory.controls.name.errors && nameValid}" type="text" name="name" class="form-control" autocomplete="off" placeholder="*name" formControlName="name"
+                  (keyup)="checkCatagoryName('update')">
+                  <ul class="help-block">
+                    <li *ngIf="formUpdateCatagory.controls.name.errors?.required && formUpdateCatagory.controls.name.dirty">This field is required</li>
+                    <li *ngIf="formUpdateCatagory.controls.name.errors?.minlength && formUpdateCatagory.controls.name.value || formUpdateCatagory.controls.name.errors?.maxlength && formUpdateCatagory.controls.name.value ">Catagory's name must be at least 2 characters but no more than 30</li>
+                    <li *ngIf="catagoryNameMessage && formUpdateCatagory.controls.name.valid">{{ catagoryNameMessage }}</li>
+                  </ul>
+              </div>
+            </div>
+            <input  [disabled]="!formUpdateCatagory.valid || !catagoryNameValid || proccessing" type="submit" class="btn btn-primary" value="Submit">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Update Catagory Model -->
+  
+  <!-- Delete Catagory Confirm Model -->
+  <div class="modal" id="delete-confirm-model">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title text-danger">WARNING</h4>
+          <button type="button" class="close" data-dismiss="modal"></button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div>Catagory Name: {{ selectedCatagory?.name }}</div>
+          Are you sure delete this catagory?
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" (click)="onDeleteCatagory()">Agree</button>
+          <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Cancle</button>
+        </div> 
+      </div>
+    </div>
+  </div>
+  <!-- End delete confirm model -->

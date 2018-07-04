@@ -1,0 +1,20 @@
+<div *ngIf="product" class="container">
+<br>
+<h2>{{ product.name }}</h2>
+<h3 *ngIf="product.price.unit === 'VND'" class="text-danger">{{ product.price?.value | number }}<sup>đ</sup></h3>
+<h3 *ngIf="product.price.unit === 'DOLLAR'" class="text-danger"><i class="fa fa-usd" aria-hidden="true"></i> {{ product.price?.value | number }}</h3>
+ <div class="text-center">
+   <img class="rounded" src="{{productImageUrl}}{{product.images[0]}}" alt="">
+ </div>
+ <br>
+ <div>
+    <h4>Detail</h4>
+    <div [innerHTML]="product.detail"></div>
+ </div>
+ <div>
+    <h4>Other images of this product</h4>
+    <div *ngFor="let image of product.images; first as isFirst" class="text-center other-image">
+        <img *ngIf="!isFirst" class="rounded" src="{{productImageUrl}}{{image}}" alt="">
+    </div>
+ </div>
+</div>

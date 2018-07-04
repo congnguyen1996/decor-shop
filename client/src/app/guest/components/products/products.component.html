@@ -1,0 +1,50 @@
+<div class="my-3 my-md-5" id="list-product">
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">
+        Products
+      </h1>
+      <div *ngIf="page < pages" class="page-subtitle">{{ limit*(page-1) }} - {{ limit*page }} of {{ total }} products</div>
+      <div *ngIf="page >= pages" class="page-subtitle">{{ limit*(page-1) }} - {{ total }} of {{ total }} products</div>
+      <div class="page-options d-flex">
+        <select class="form-control custom-select w-auto">
+          <option value="asc">Newest</option>
+          <option value="desc">Oldest</option>
+        </select>
+        <div class="input-icon ml-2">
+          <span class="input-icon-addon">
+            <i class="fe fe-search"></i>
+          </span>
+          <input type="text" class="form-control w-10" placeholder="Search product">
+        </div>
+      </div>
+    </div>
+    <div class="row row-cards">
+      <div *ngFor="let product of listProduct" class="col-sm-4 col-lg-3 mb-5">
+        <div class="mb-1 ratio-4x3">
+          <div class="ratio-content">
+            <a [routerLink]="['/product-detail/', product._id]">
+              <img style="height: 100%;" src="{{productImageUrl}}{{product.images[0]}}" alt="Photo by Nathan Guerrero" class="rounded">
+            </a>
+          </div>
+        </div>
+        <div>{{ product.name }}</div>
+        <h4 *ngIf="product.price.unit === 'VND'" class="text-danger">{{ product.price?.value | number }}<sup>đ</sup></h4>
+        <h4 *ngIf="product.price.unit === 'DOLLAR'" class="text-danger"><i class="fa fa-usd" aria-hidden="true"></i> {{ product.price?.value | number }}</h4>
+      </div>
+    </div>
+    <!-- Pagination -->
+    <div *ngIf="pages > 1">
+      <ul class="pagination justify-content-center">
+          <li *ngIf="page > 0" class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li *ngIf="page >= 2" class="page-item"><a class="page-link" href="#">{{ page - 2 }}</a></li>
+          <li *ngIf="page >= 1" class="page-item"><a class="page-link" href="#">{{ page - 1 }}</a></li>
+          <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+          <li *ngIf="page < pages - 2" class="page-item"><a class="page-link" href="#">{{ page + 1 }}</a></li>
+          <li *ngIf="page < pages - 1" class="page-item"><a class="page-link" href="#">{{ page + 2 }}</a></li>
+          <li *ngIf="page < pages" class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </div>
+    <!-- End pagination -->
+  </div>
+</div>

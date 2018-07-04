@@ -1,0 +1,49 @@
+<div class="header">
+  <div class="container">
+    <div class="d-flex">
+      <!-- image logo -->
+      <a class="header-brand" href="./index.html">
+        <img src="{{commonImageUrl}}uncle-decor-logo.png" alt="decor logo">
+      </a>
+      <div class="d-flex order-lg-2 ml-auto">
+          <div class="collapse d-lg-flex p-0" id="headerMenuCollapse">
+              <div class="container">
+                <div class="row align-items-center">
+                  <div class="col-lg order-lg-first">
+                    <ul class="nav nav-tabs justify-content-end border-0 flex-column flex-lg-row">
+                      <li class="nav-item">
+                        <a routerLink="" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" class="nav-link">About UncleDecor</a>
+                      </li>
+                      <li class="nav-item">
+                        <a routerLink="products/all" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" class="nav-link">All Products</a>
+                      </li>
+                      <li *ngFor="let catagory of listCatagory" class="nav-item">
+                        <a routerLink="products/{{catagory.name.trim().toLowerCase().replace(' ', '-')}}" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" class="nav-link">{{ catagory.name }}</a>
+                      </li>
+                    </ul>
+                    <br>
+                    <ul class="nav justify-content-end border-0 flex-column flex-lg-row">
+                        <li class="nav-item"  >
+                          <i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;Email: uncledecor@gmail.com
+                        </li>
+                        <li class="nav-item">
+                          <i class="fa fa-phone" aria-hidden="true"></i>&nbsp;Hotline: 097.993.6223
+                        </li>
+                        <li class="nav-item">
+                          <a target="_blank" href="https://www.facebook.com/UncleDecor"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a target="_blank" href="https://www.facebook.com/UncleDecor"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        </li>
+                      </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+      <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
+        <span class="header-toggler-icon"></span>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="page">
+  <div class="page-main">
+    <div *ngIf="currentUrl && currentUrl.startsWith('/admin') && !currentUrl.startsWith('/admin/login')">
+      <app-admin-navbar></app-admin-navbar>
+      <app-admin-menu></app-admin-menu>
+    </div>
+    <app-guest-navbar *ngIf="currentUrl && !currentUrl.startsWith('/admin')"></app-guest-navbar>
+    <router-outlet></router-outlet>
+  </div>
+  <app-guest-footer *ngIf="currentUrl && !currentUrl.startsWith('/admin')"></app-guest-footer>
+  <app-admin-footer *ngIf="currentUrl && currentUrl.startsWith('/admin') && !currentUrl.startsWith('/admin/login')"></app-admin-footer>
+</div>

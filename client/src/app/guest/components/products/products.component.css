@@ -1,0 +1,4 @@
+
+.row-cards img:hover {
+    -webkit-filter: brightness(50%);
+}

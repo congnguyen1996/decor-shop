@@ -1,0 +1,258 @@
+
+<div class="my-3 my-md-5">
+    <div class="container">
+      <!-- Button create new product -->
+      <div>
+          <button class="btn btn-success" data-toggle="modal" data-target="#create-product-model"><i class="fa fa-plus" aria-hidden="true"></i> Create new product</button>
+      </div> 
+      <div class="page-header">
+        <h1 class="page-title">
+          Product List
+        </h1>
+        <div *ngIf="page < pages" class="page-subtitle">{{ limit*(page-1) }} - {{ limit*page }} of {{ total }} products</div>
+        <div *ngIf="page >= pages" class="page-subtitle">{{ limit*(page-1) }} - {{ total }} of {{ total }} products</div>
+        <div class="page-options d-flex">
+          <select [(ngModel)]="filter.filterByCatagory" (change)="filterByCatagory()" class="form-control custom-select w-auto">
+            <option value="all">All product</option>
+            <option *ngFor="let catagory of listCatagory" [value]="catagory._id">{{ catagory.name }}</option>
+          </select>
+          <select class="form-control custom-select w-auto ml-2">
+            <option value="asc">Newest</option>
+            <option value="desc">Oldest</option>
+          </select>
+          <div class="input-icon ml-2">
+            <span class="input-icon-addon">
+              <i class="fe fe-search"></i>
+            </span>
+            <input type="text" class="form-control w-10" placeholder="Search product">
+          </div>
+        </div>
+      </div>
+      <!-- Custom Success/Error Message -->
+      <div *ngIf="message" [ngClass]="messageClass">
+          <button type="button" class="close" (click)="removeMessage()"></button>
+          {{ message }}
+      </div>
+      <div class="row row-cards row-deck">
+        <div class="col-12">
+          <div class="card">
+            <div class="table-responsive">
+              <!-- Table display list product -->
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="text-center" scope="col">No</th>
+                      <th class="text-center" scope="col">IMAGES</th>
+                      <th class="text-center" scope="col">ID</th>
+                      <th class="text-center" scope="col">NAME</th>
+                      <th class="text-center" scope="col">Catagory</th>
+                      <th class="text-center" scope="col">PRICE</th>
+                      <!-- <th class="text-center" scope="col">DETAIL</th> -->
+                      <th class="text-center" scope="col">CREATEBY</th>
+                      <th class="text-center" scope="col">CREATEAT</th> 
+                      <th class="text-center" scope="col">ACTION</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let product of listProduct; index as i">
+                        <th class="text-center" scope="row">{{ i*page + 1 }}</th>
+                        <td class="text-center"><img class="img-rounded" height="30" width="40" src="{{productImagesUrl}}{{product.images[0]}}" alt=""></td>
+                        <td class="text-center">{{ product.id }}</td>
+                        <td class="text-center">{{ product.name }}</td>
+                        <td class="text-center">{{ listCatagoryObj[product.catagoryid]?.name  }}</td>
+                        <td *ngIf="product.price.unit === 'VND'" class="text-center">{{ product.price?.value | number }}<sup>đ</sup></td>
+                        <td *ngIf="product.price.unit === 'DOLLAR'" class="text-center"><i class="fa fa-usd" aria-hidden="true"></i> {{ product.price?.value | number }}</td>
+                        <!-- <td class="text-center"><a data-toggle="popover" data-placement="bottom" data-content="product.detail">see more</a></td> -->
+                        <td class="text-center" data-toggle="tooltip" data-placement="bottom" title="acount: {{listUserObj[product.createby]?.username}}">{{ listUserObj[product.createby]?.fullname }}</td>
+                        <td class="text-center">{{ product.createat | date:'d/M/yyyy' }}</td>
+                        <td class="action text-center">
+                            <a href="/product-detail/{{product._id}}" target="_blank"><button class="btn btn-info btn-sm" data-toggle="modal" data-target="#see-product-model">See more</button></a>
+                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#update-product-model" (click)="selectProduct(product, 'edit')">Edit</button>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectProduct(product, 'delete')">Delete</button>
+                        </td>
+                      </tr>
+                  </tbody>
+                </table>
+                <!--  -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--  -->
+    </div>
+    <!-- Pagination -->
+    <div *ngIf="pages > 1">
+      <ul class="pagination justify-content-center">
+          <li *ngIf="page > 0" class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li *ngIf="page >= 2" class="page-item"><a class="page-link" href="#">{{ page - 2 }}</a></li>
+          <li *ngIf="page >= 1" class="page-item"><a class="page-link" href="#">{{ page - 1 }}</a></li>
+          <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+          <li *ngIf="page < pages - 2" class="page-item"><a class="page-link" href="#">{{ page + 1 }}</a></li>
+          <li *ngIf="page < pages - 1" class="page-item"><a class="page-link" href="#">{{ page + 2 }}</a></li>
+          <li *ngIf="page < pages" class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </div>
+    <!-- End pagination -->
+  </div>
+  
+  <!-- The Create Product Model -->
+  <div class="modal" id="create-product-model">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Create new product</h4>
+          <button type="button" class="close" data-dismiss="modal"></button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- form create product -->
+          <form [formGroup]="formCreateProduct" (submit)="onSumbitCreateProduct()">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-label">ID</label>
+                    <div [ngClass]="{'has-error': (formCreateProduct.controls.id.errors && formCreateProduct.controls.id.dirty) || (!productIdValid && formCreateProduct.controls.id.dirty), 'has-success': !formCreateProduct.controls.name.errors && productIdValid}">
+                      <input [ngClass]="{'state-valid': !formCreateProduct.controls.id.errors && productIdValid}" type="text" name="id" class="form-control" autocomplete="off" placeholder="" formControlName="id"
+                        (keyup)="checkProductId('create')">
+                        <ul class="help-block">
+                          <li *ngIf="formCreateProduct.controls.id.errors?.required && formCreateProduct.controls.id.dirty">This field is required</li>
+                          <li *ngIf="formCreateProduct.controls.id.errors?.minlength && formCreateProduct.controls.id.value || formCreateProduct.controls.id.errors?.maxlength && formCreateProduct.controls.id.value ">Product's Id must be at least 2 characters but no more than 30</li>
+                          <li *ngIf="productIdMessage && formCreateProduct.controls.id.valid">{{ productIdMessage }}</li>
+                        </ul>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-label">Catagory</label>
+                    <div>
+                      <select formControlName="catagoryid" class="form-control custom-select" name="catagogyid">
+                        <option *ngFor="let catagory of listCatagory" [value]="catagory._id">{{ catagory.name }}</option>
+                      </select>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Product Name</label>
+              <div [ngClass]="{'has-error': (formCreateProduct.controls.name.errors && formCreateProduct.controls.name.dirty), 'has-success': !formCreateProduct.controls.name.errors}">
+                <input [ngClass]="{'state-valid': !formCreateProduct.controls.name.errors}" type="text" name="name" class="form-control" autocomplete="off" placeholder="" formControlName="name">
+                  <ul class="help-block">
+                    <li *ngIf="formCreateProduct.controls.name.errors?.required && formCreateProduct.controls.name.dirty">This field is required</li>
+                    <li *ngIf="formCreateProduct.controls.name.errors?.minlength && formCreateProduct.controls.name.value || formCreateProduct.controls.name.errors?.maxlength && formCreateProduct.controls.name.value ">Product's name must be at least 3 characters but no more than 100</li>
+                  </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-label">Unit</label>
+                  <div class="selectgroup selectgroup-pills">
+                    <label class="selectgroup-item">
+                      <input formControlName="priceunit" type="radio" name="priceunit" value="DOLLAR" class="selectgroup-input" checked="">
+                      <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-usd" aria-hidden="true"></i>DOLLAR</span>
+                    </label>
+                    <label class="selectgroup-item">
+                      <input formControlName="priceunit" type="radio" name="priceunit" value="VND" class="selectgroup-input">
+                      <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-star" aria-hidden="true"></i>VND</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-label">Price</label>
+                  <div [ngClass]="{'has-error': (formCreateProduct.controls.pricevalue.errors && formCreateProduct.controls.pricevalue.dirty), 'has-success': !formCreateProduct.controls.pricevalue.errors}">
+                      <input [ngClass]="{'state-valid': !formCreateProduct.controls.pricevalue.errors}" type="text" name="price-value" class="form-control" autocomplete="off" placeholder="" formControlName="pricevalue">
+                      <ul class="help-block">
+                        <li *ngIf="formCreateProduct.controls.pricevalue.errors?.required && formCreateProduct.controls.pricevalue.dirty">This field is required</li>
+                      </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Images (4:3 standard)</div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" name="example-file-input-custom" multiple accept="image/png, image/jpeg" (change)="onFileSelected($event)">
+                <label class="custom-file-label">Choose file</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <img class="rounded ml-3 mt-2" *ngFor="let image of previewProductImages"  src="{{image}}" width="120" height="90" alt="">
+              </div>
+            </div>  
+            <div class="form-group">
+              <div class="form-label">Detail</div>
+              <!-- <input type="text" name="detail" class="form-control" autocomplete="off" placeholder="" formControlName="detail"> -->
+              <app-ngx-editor height="100px" minHeight="50px" [spellcheck]="true" formControlName="detail"></app-ngx-editor>
+            </div>
+            <input [disabled]="!formCreateProduct.valid || !productIdValid || proccessing" type="submit" class="btn btn-primary" value="Submit">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Create Product Model -->
+  
+  <!-- Update Product Model -->
+  <div class="modal" id="update-product-model">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Update Product</h4>
+          <button type="button" class="close" data-dismiss="modal"></button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <p>Chức năng này sẽ được cập nhật sau.</p>
+          <div>Thực hiện delete -> create :v</div>
+          <!-- form update product -->
+          <!-- <form [formGroup]="formUpdateCatagory" (submit)="onSumbitUpdateCatagory()">
+            <div class="form-group">
+              <label for="name">CatagoryName</label>
+              <div [ngClass]="{'has-error': (formUpdateCatagory.controls.name.errors && formUpdateCatagory.controls.name.dirty) || (!catagoryNameValid && formUpdateCatagory.controls.name.value), 'has-success': !formUpdateCatagory.controls.name.errors && catagoryNameValid}">
+                <input [ngClass]="{'state-valid': !formUpdateCatagory.controls.name.errors && nameValid}" type="text" name="name" class="form-control" autocomplete="off" placeholder="*name" formControlName="name"
+                  (keyup)="checkCatagoryName('update')">
+                  <ul class="help-block">
+                    <li *ngIf="formUpdateCatagory.controls.name.errors?.required && formUpdateCatagory.controls.name.dirty">This field is required</li>
+                    <li *ngIf="formUpdateCatagory.controls.name.errors?.minlength && formUpdateCatagory.controls.name.value || formUpdateCatagory.controls.name.errors?.maxlength && formUpdateCatagory.controls.name.value ">Catagory's name must be at least 2 characters but no more than 30</li>
+                    <li *ngIf="catagoryNameMessage && formUpdateCatagory.controls.name.valid">{{ catagoryNameMessage }}</li>
+                  </ul>
+              </div>
+            </div>
+            <input  [disabled]="!formUpdateCatagory.valid || !catagoryNameValid || proccessing" type="submit" class="btn btn-primary" value="Submit">
+          </form> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Update Product Model -->
+  
+  <!-- Delete Product Confirm Model -->
+  <div class="modal" id="delete-confirm-model">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title text-danger">WARNING</h4>
+          <button type="button" class="close" data-dismiss="modal"></button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div>Product Id: {{ selectedProduct?.id }}</div>
+          <div>Product Name: {{ selectedProduct?.name }}</div>
+          Are you sure delete this product?
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" (click)="onDeleteProduct()">Agree</button>
+          <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Cancle</button>
+        </div> 
+      </div>
+    </div>
+  </div>
+  <!-- End delete confirm model -->
