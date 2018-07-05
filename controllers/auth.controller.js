@@ -61,7 +61,7 @@ exports.login = async function(req, res, next) {
             return res.status(200).json({status: 200, success: false, message: "Username or Email invalid"});
         }
         const token = jwt.sign({userId: user._id }, config.secret, { expiresIn: '24h' }); // Create a token for client
-        res.status(200).json({status: 200, success: true, data: { token: token, user: {username: user.username}}, message: "Success!"});
+        res.status(200).json({status: 200, success: true, data: { token: token, user: {username: user.username, role: user.role}}, message: "Success!"});
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});
     }

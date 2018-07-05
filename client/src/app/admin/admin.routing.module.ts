@@ -9,14 +9,12 @@ import { UserComponent } from './components/user/user.component';
 import { SettingComponent } from './components/setting/setting.component';
 import { HelpComponent } from './components/help/help.component';
 
-// import { AuthGuard } from '../guards/auth.guard';
-// import { NotAuthGuard } from '../guards/not-auth.guard';
-
+import { AuthGuard } from './guards/auth.guard';
 
 const adminRoutes: Routes = [
     {
         path: '',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         children: [
             {
                 path: '',
@@ -51,12 +49,11 @@ const adminRoutes: Routes = [
     },
     {
         path: 'login',
-        component: LoginComponent,
-        // canActivate: [NotAuthGuard]
+        component: LoginComponent
     },
     {
         path: '**',
-        redirectTo: 'dashboard',
+        redirectTo: 'admin/dashboard',
         pathMatch: 'full'
     }
 ];

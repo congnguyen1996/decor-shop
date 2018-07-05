@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
-import { AuthGuard } from '../../../guards/auth.guard';
+import { AuthGuard } from '../../guards/auth.guard';
 
 @Component({
   selector: 'app-login',
@@ -27,14 +27,21 @@ export class LoginComponent implements OnInit {
     public router: Router
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.createFormLogin();
     if (this.authGuard.redirectUrl) {
       this.messageClass = 'alert alert-danger'; // Set error message: need to login
       this.message = 'You must be logged in to view that page.'; // Set message
       this.previousUrl = this.authGuard.redirectUrl; // Set the previous URL user was redirected from
       this.authGuard.redirectUrl = undefined; // Erase previous URL
     }
-    this.createFormLogin();
+    if (await this.authService.loggedIn()) {
+      if (this.previousUrl) {
+        this.router.navigate([this.previousUrl]); // Redirect to page they were trying to view before
+      } else {
+        this.router.navigate(['/admin/dashboard']); // Navigate to dashboard view
+      }
+    }
   }
 
   createFormLogin() {

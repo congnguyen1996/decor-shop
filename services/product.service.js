@@ -6,7 +6,7 @@ var directoryConfig = require('../config/directory');
 // Saving the context of this module inside _the variable
 _this = this;
 
-// Async function to find the Catagory by Id
+// Async function to find the Product by Id
 
 exports.findProductById = async function(id, fields) {
     try {
@@ -26,14 +26,18 @@ exports.findByIdOfProduct = async function(id, fields) {
     }
 }
 
-// Async function to get the Catagory List
-exports.getProducts = async function(query, page, limit, sort) {
+// Async function to get the Product List
+exports.getProducts = async function(query, key, page, limit, sort) {
     // Options setup for the mongoose paginate
     var query = query ? JSON.parse(query) : {};
+    if (key) {
+        var regExp = new RegExp(`${key}`, "i");
+        query.$or = [ {id: regExp}, {name: regExp} ];
+    }
     var options = {
         page: page ? parseInt(page) : 1,
         limit: limit ? parseInt(limit) : 1000,
-        sort: sort ? JSON.parse(sort) : {catagoryid: 'asc'}
+        sort: sort ? JSON.parse(sort) : {catagoryid: 'asc', createat: 'asc'}
     }
     // Try Catch the awaited promise to handle the error
     try {
@@ -45,6 +49,7 @@ exports.getProducts = async function(query, page, limit, sort) {
         throw Error('Error while Paginate Product: ' + error);
     }
 }
+
 
 exports.createProduct = async function(product) {
     // Creating  a new Mongoose Object by using the new key word

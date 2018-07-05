@@ -12,8 +12,7 @@ import { SettingComponent } from './components/setting/setting.component';
 import { HelpComponent } from './components/help/help.component';
 
 import { UserService } from './services/user.service';
-import { AuthGuard } from '../guards/auth.guard';
-import { NotAuthGuard } from '../guards/not-auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -32,6 +31,6 @@ import { NotAuthGuard } from '../guards/not-auth.guard';
     AdminRoutingModule,
     NgxEditorModule
   ],
-  providers: [ UserService, AuthGuard, NotAuthGuard ]
+  providers: [ UserService, AuthGuard ]
 })
 export class AdminModule { }

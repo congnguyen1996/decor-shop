@@ -76,9 +76,15 @@ exports.deleteCatagory = async function(req, res, next) {
         return res.status(400).json({status: 400, message: "Catagory id must be present"});
     }
     try {
-        const listProduct = await ProductService.getProducts({catagoryid: req.params.id});
-        console.log(listProduct);
-        // await CatagoryService.deleteCatagory(req.params.id);
+        var query = '{"catagoryid": "' + req.params.id + '"}';
+        const result = await ProductService.getProducts(query);
+        if (result.total > 0) {
+            var listProduct = result.docs;
+            for (let i = 0; i < listProduct.length; i++) {
+                await ProductService.deleteProduct(listProduct[i]._id);
+            }
+        }
+        await CatagoryService.deleteCatagory(req.params.id);
         return res.status(200).json({status: 200, message: "The catagory is deleted!"});
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});

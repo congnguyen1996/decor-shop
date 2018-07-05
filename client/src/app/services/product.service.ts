@@ -48,11 +48,14 @@ export class ProductService {
     .pipe(map(res => res.json())));
   }
 
-  // Function to register
-  getProducts(query, page, limit, sort) {
+  // Function to get products
+  getProducts(query, key, page, limit, sort) {
     let params = '?';
     if (query) {
       params += '&query=' + query;
+    }
+    if (key) {
+      params += '&key=' + key;
     }
     if (page) {
       params += '&page=' + page;

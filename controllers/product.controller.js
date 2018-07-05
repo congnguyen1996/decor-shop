@@ -22,6 +22,7 @@ exports.checkProductId = async function (req, res, next) {
     }
 }
 
+
 exports.getProduct = async function (req, res, next) {
     if(!req.params.id) {
         return res.status(400).json({status: 400, message: "Product id not provided"});
@@ -36,7 +37,7 @@ exports.getProduct = async function (req, res, next) {
 
 exports.getProducts = async function(req, res, next) {
     try {
-        const products = await ProductService.getProducts(req.query.query, req.query.page, req.query.limit, req.query.sort);
+        const products = await ProductService.getProducts(req.query.query, req.query.key, req.query.page, req.query.limit, req.query.sort);
         res.status(200).json({status: 200, data: products, message: "Successfully get list product!"});
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});

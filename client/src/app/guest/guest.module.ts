@@ -6,9 +6,6 @@ import { ProductsComponent } from './components/products/products.component';
 import { SingleProductComponent } from './components/single-product/single-product.component';
 import { AboutComponent } from './components/about/about.component';
 
-import { AuthGuard } from '../guards/auth.guard';
-import { NotAuthGuard } from '../guards/not-auth.guard';
-
 @NgModule({
   declarations: [
     ProductsComponent,
@@ -21,6 +18,6 @@ import { NotAuthGuard } from '../guards/not-auth.guard';
     ReactiveFormsModule,
     GuestRoutingModule
   ],
-  providers: [AuthGuard, NotAuthGuard]
+  providers: []
 })
 export class GuestModule { }

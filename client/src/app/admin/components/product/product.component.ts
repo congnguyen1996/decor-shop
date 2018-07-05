@@ -18,7 +18,7 @@ export class ProductComponent implements OnInit {
 
   //
   query = null;
-  sort = null;
+  sort = '{"createat": "desc"}';
   page = 1;
   pages;
   total;
@@ -41,9 +41,13 @@ export class ProductComponent implements OnInit {
   filesToUpload: Array<File> = [];
   previewProductImages = [];
 
-  filter = {
+  filterInput = {
     filterByCatagory: 'all'
   };
+  sortInput = {
+    sortByDate: 'desc'
+  };
+  searchInput;
   // productImagesUrl = environment.productImageUrl;
   productImagesUrl = 'http://localhost:3000/images/upload/test/';
 
@@ -57,11 +61,11 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createFormCreateProduct();
-    this.createFormUpdateProduct();
     this.getListProduct();
     this.getListCatagory();
     this.getListUser();
+    this.createFormCreateProduct();
+    this.createFormUpdateProduct();
   }
 
   // Function to create form add a new product
@@ -77,7 +81,7 @@ export class ProductComponent implements OnInit {
         Validators.minLength(3),
         Validators.maxLength(100)
       ])],
-      catagoryid: ['Select one catagory', Validators.required],
+      catagoryid: [null, Validators.required],
       priceunit: ['DOLLAR', Validators.required],
       pricevalue: ['', Validators.required],
       detail: ['', Validators.required]
@@ -168,7 +172,7 @@ export class ProductComponent implements OnInit {
   // Function to get products with option of this
   async getListProduct() {
     try {
-      const response  = await this.productService.getProducts(this.query, this.page, this.limit, this.sort);
+      const response  = await this.productService.getProducts(this.query, this.searchInput, this.page, this.limit, this.sort);
       this.listProduct = response.data.docs;
       this.page = response.data.page;
       this.pages = response.data.pages;
@@ -295,11 +299,28 @@ export class ProductComponent implements OnInit {
   }
 
   filterByCatagory() {
-    if (this.filter.filterByCatagory === 'all') {
+    if (this.filterInput.filterByCatagory === 'all') {
       this.query = null;
     } else {
-      this.query = '{"catagoryid": "'  + this.filter.filterByCatagory + '"}';
+      this.query = '{"catagoryid": "'  + this.filterInput.filterByCatagory + '"}';
     }
     this.getListProduct();
+  }
+
+  sortByDate() {
+    this.sort = '{"createat": "' + this.sortInput.sortByDate + '"}';
+    this.getListProduct();
+  }
+
+  setPage(n) {
+    this.page = n;
+    this.getListProduct();
+  }
+
+  searchProducts(e) {
+    if (e.keyCode === 13) {
+      this.page = 1;
+      this.getListProduct();
+    }
   }
 }

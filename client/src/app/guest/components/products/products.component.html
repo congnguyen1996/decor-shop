@@ -4,10 +4,10 @@
       <h1 class="page-title">
         Products
       </h1>
-      <div *ngIf="page < pages" class="page-subtitle">{{ limit*(page-1) }} - {{ limit*page }} of {{ total }} products</div>
-      <div *ngIf="page >= pages" class="page-subtitle">{{ limit*(page-1) }} - {{ total }} of {{ total }} products</div>
+      <div *ngIf="page < pages" class="page-subtitle">{{ limit*(page-1) + 1 }} - {{ limit*page + 1 }} of {{ total }} products</div>
+      <div *ngIf="page >= pages" class="page-subtitle">{{ limit*(page-1) + 1 }} - {{ total }} of {{ total }} products</div>
       <div class="page-options d-flex">
-        <select class="form-control custom-select w-auto">
+        <select [(ngModel)]="sortInput.sortByDate" class="form-control custom-select w-auto ml-2" (change)="sortByDate()">
           <option value="asc">Newest</option>
           <option value="desc">Oldest</option>
         </select>
@@ -15,7 +15,7 @@
           <span class="input-icon-addon">
             <i class="fe fe-search"></i>
           </span>
-          <input type="text" class="form-control w-10" placeholder="Search product">
+          <input [(ngModel)]="searchInput" type="text" class="form-control w-10" placeholder="Search product" (keyup)="searchProducts($event)">
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
             </a>
           </div>
         </div>
-        <div>{{ product.name }}</div>
+        <div><strong>[{{ product.id }}]</strong>&nbsp;&nbsp;{{ product.name }}</div>
         <h4 *ngIf="product.price.unit === 'VND'" class="text-danger">{{ product.price?.value | number }}<sup>đ</sup></h4>
         <h4 *ngIf="product.price.unit === 'DOLLAR'" class="text-danger"><i class="fa fa-usd" aria-hidden="true"></i> {{ product.price?.value | number }}</h4>
       </div>
@@ -36,13 +36,13 @@
     <!-- Pagination -->
     <div *ngIf="pages > 1">
       <ul class="pagination justify-content-center">
-          <li *ngIf="page > 0" class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li *ngIf="page >= 2" class="page-item"><a class="page-link" href="#">{{ page - 2 }}</a></li>
-          <li *ngIf="page >= 1" class="page-item"><a class="page-link" href="#">{{ page - 1 }}</a></li>
-          <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
-          <li *ngIf="page < pages - 2" class="page-item"><a class="page-link" href="#">{{ page + 1 }}</a></li>
-          <li *ngIf="page < pages - 1" class="page-item"><a class="page-link" href="#">{{ page + 2 }}</a></li>
-          <li *ngIf="page < pages" class="page-item"><a class="page-link" href="#">Next</a></li>
+          <li *ngIf="page > 3" class="page-item"><span class="page-link" (click)="setPage(1)">First</span></li>
+          <li *ngIf="page > 2" class="page-item"><span class="page-link" (click)="setPage(page-2)">{{ page - 2 }}</span></li>
+          <li *ngIf="page > 1" class="page-item"><span class="page-link" (click)="setPage(page-1)">{{ page - 1 }}</span></li>
+          <li class="page-item active"><span class="page-link">{{ page }}</span></li>
+          <li *ngIf="page + 1 <= pages" class="page-item"><span class="page-link" (click)="setPage(page+1)">{{ page + 1 }}</span></li>
+          <li *ngIf="page + 2 <= pages" class="page-item"><span class="page-link" (click)="setPage(page+2)">{{ page + 2 }}</span></li>
+          <li *ngIf="page + 2 < pages" class="page-item"><span class="page-link" (click)="setPage(pages)">Last</span></li>
         </ul>
     </div>
     <!-- End pagination -->

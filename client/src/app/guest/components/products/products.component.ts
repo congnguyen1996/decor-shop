@@ -21,13 +21,17 @@ export class ProductsComponent implements OnInit {
   query = null;
   limit = 20;
   page = 1;
-  sort = null;
+  sort = '{"createat": "desc"}';
   pages;
   total;
 
-  filter = {
+  filterInput = {
     filterByCatagory: null
   };
+  sortInput = {
+    sortByDate: 'desc'
+  };
+  searchInput;
 
   constructor(
     private productService: ProductService,
@@ -44,7 +48,8 @@ export class ProductsComponent implements OnInit {
       filter(event => event instanceof NavigationEnd))
       .subscribe((route: NavigationEnd) => {
         const params = route.url.split('/');
-        this.filter.filterByCatagory = params[params.length - 1];
+        this.filterInput.filterByCatagory = params[params.length - 1];
+        this.page = 1;
         this.filterByCatagory();
     });
   }
@@ -53,7 +58,7 @@ export class ProductsComponent implements OnInit {
   // Function to get products with option of this
   async getListProduct() {
     try {
-      const response = await this.productService.getProducts(this.query, this.page, this.limit, this.sort);
+      const response = await this.productService.getProducts(this.query, this.searchInput, this.page, this.limit, this.sort);
       this.listProduct = response.data.docs;
       this.page = response.data.page;
       this.pages = response.data.pages;
@@ -81,12 +86,29 @@ export class ProductsComponent implements OnInit {
   }
 
   filterByCatagory() {
-    if (this.filter.filterByCatagory === 'all') {
+    if (this.filterInput.filterByCatagory === 'all') {
       this.query = null;
     } else {
-      const catagory = this.listCatagoryObj[this.filter.filterByCatagory];
+      const catagory = this.listCatagoryObj[this.filterInput.filterByCatagory];
       this.query = '{"catagoryid": "'  + catagory._id + '"}';
     }
     this.getListProduct();
+  }
+
+  sortByDate() {
+    this.sort = '{"createat": "' + this.sortInput.sortByDate + '"}';
+    this.getListProduct();
+  }
+
+  setPage(n) {
+    this.page = n;
+    this.getListProduct();
+  }
+
+  searchProducts(e) {
+    if (e.keyCode === 13) {
+      this.page = 1;
+      this.getListProduct();
+    }
   }
 }
