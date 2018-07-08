@@ -1,7 +1,7 @@
 // Getting the Newly created Mongoose Model we just created
 var Product = require('../models/product');
 var fs = require('fs');
-var directoryConfig = require('../config/directory');
+const pathConfig = require('../config/path');
 
 // Saving the context of this module inside _the variable
 _this = this;
@@ -95,7 +95,7 @@ exports.updateProduct = async function(product) {
         if (product.detail) {
             oldProduct.detail = product.detail;
         }
-        var savedProduct = await oldProduct.save();
+        var savedProduct = await oldProduct.update();
         return savedProduct;
     } catch (error) {
         throw Error('Error occured while updating the Product: ' + error);
@@ -116,6 +116,6 @@ exports.deleteProduct = async function(id) {
 
 exports.removeProductImages = async function(fileNames) {
     for(let i = 0; i < fileNames.length; i++) {
-       fs.unlinkSync(directoryConfig.PRODUCTS_IMAGE_PATH + fileNames[i]);
+       fs.unlinkSync(pathConfig.PRODUCTS_IMAGE_PATH + fileNames[i]);
     }
 }

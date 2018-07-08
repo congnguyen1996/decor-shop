@@ -1,7 +1,7 @@
 var express = require('express');
-var uploadFileConfig = require('../../config/fileupload');
+var fileUpload = require('../../services/fileupload.service');
 var multer = require('multer');
-var uploadProductImages = multer({ storage: uploadFileConfig.storageProductImages});
+var uploadProductImages = multer({ storage: fileUpload.storageProductImages });
 
 var router = express.Router();
 
@@ -16,7 +16,7 @@ router.get('/get', ProductController.getProducts);
 router.post('/create', [AuthController.checkToken, ProductController.createProduct]);
 router.put('/update', [AuthController.checkToken, ProductController.updateProduct]);
 router.delete('/delete/:id', [AuthController.checkToken, ProductController.deleteProduct]);
-router.post('/upload-images', [AuthController.checkToken, uploadProductImages.array('images[]', 12), ProductController.uploadProductImages]);
+router.post('/upload-images', [AuthController.checkToken, uploadProductImages.array('images[]', 24), ProductController.uploadProductImages]);
 
 // Export the Router
 module.exports = router;

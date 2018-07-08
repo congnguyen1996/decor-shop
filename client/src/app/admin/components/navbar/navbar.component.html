@@ -9,11 +9,11 @@
         </a>
         <div class="d-flex order-lg-2 ml-auto">
           <div class="dropdown d-none d-md-flex">
-            <a class="nav-link icon" data-toggle="dropdown">
+            <!-- <a class="nav-link icon" data-toggle="dropdown">
               <i class="fe fe-bell"></i>
               <span class="nav-unread"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+            </a> -->
+            <!-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
               <a href="#" class="dropdown-item d-flex">
                 <span class="avatar mr-3 align-self-center" style="background-image: url({{commonImageUrl}}ninja.png)"></span>
                 <div>
@@ -37,22 +37,19 @@
               </a>
               <div class="dropdown-divider"></div>
               <a href="#" class="dropdown-item text-center text-muted-dark">Mark all as read</a>
-            </div>
+            </div> -->
           </div>
           <div class="dropdown">
             <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-              <span class="avatar" style="background-image: url({{commonImageUrl}}ninja.png)"></span>
+              <!-- <span class="avatar" [style.background-image]="'url(ninjaImage)'"></span> -->
               <span class="ml-2 d-none d-lg-block">
-                <span class="text-default">Lê Đắc Tùng</span>
-                <small class="text-muted d-block mt-1">Administrator</small>
+                <span class="text-default">{{ user.fullname }}</span>
+                <small class="text-muted d-block mt-1">{{ listRoleObj[user.role] }}</small>
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-              <a class="dropdown-item" routerLink="admin/setting">
-                <i class="dropdown-icon fe fe-settings"></i> Setting
-              </a>
-              <a class="dropdown-item" routerLink="admin/help">
-                <i class="dropdown-icon fe fe-help-circle"></i> Need help?
+              <a href="" class="dropdown-item" data-toggle="modal" data-target="#change-password-model">
+                <i class="dropdown-icon fa fa-key" aria-hidden="true"></i> Change password
               </a>
               <a href="/admin/login" class="dropdown-item" (click)="onLogout()">
                 <i class="dropdown-icon fe fe-log-out"></i> Sign out
@@ -66,3 +63,61 @@
       </div>
     </div>
   </div>
+
+  <!-- Delete User Confirm Model -->
+<div class="modal" id="change-password-model">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Change your password</h4>
+        <button type="button" class="close" data-dismiss="modal"></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <!-- Custom Success/Error Message -->
+        <div *ngIf="message" [ngClass]="messageClass">
+        <button type="button" class="close" (click)="removeMessage()"></button>
+        {{ message }}
+        </div>
+          <form [formGroup]="formUpdatePw" (submit)="onSubmitUpdatePw()">
+            <div class="form-group">
+              <label for="oldpw">Old password</label>
+              <div [ngClass]="{'has-error': (formUpdatePw.controls.oldpw.errors && formUpdatePw.controls.oldpw.dirty), 'has-success': !formUpdatePw.controls.oldpw.errors}">
+                <input type="password" name="oldpw" class="form-control" autocomplete="off" placeholder="*Old password" formControlName="oldpw">
+                  <ul class="help-block">
+                    <li *ngIf="formUpdatePw.controls.oldpw.errors?.required && formUpdatePw.controls.oldpw.dirty">This field is required</li>
+                  </ul>
+              </div>
+            </div>
+            <!-- new pw input -->
+            <div class="form-group">
+              <label for="newpw">New password</label>
+              <div [ngClass]="{'has-error': (formUpdatePw.controls.newpw.errors && formUpdatePw.controls.newpw.dirty) || (formUpdatePw.errors?.passwordNotChange && formUpdatePw.controls.newpw.value), 'has-success': !formUpdatePw.controls.newpw.errors && !formUpdatePw.errors?.passwordNotChange}">
+                <input [ngClass]="{'state-valid': !formUpdatePw.controls.newpw.errors && !formUpdatePw.errors?.passwordNotChange}" type="password" name="newpw" class="form-control" autocomplete="off" placeholder="*New password" formControlName="newpw">
+                <ul class="help-block">
+                  <li *ngIf="formUpdatePw.controls.newpw.errors?.required && formUpdatePw.controls.newpw.dirty">This field is required</li>
+                  <li *ngIf="formUpdatePw.controls.newpw.errors?.minlength && formUpdatePw.controls.newpw.value || formUpdatePw.controls.newpw.errors?.maxlength && formUpdatePw.controls.newpw.value ">Password must be at least 8 characters but no more than 35</li>
+                  <li *ngIf="formUpdatePw.controls.newpw.errors?.validatePassword && formUpdatePw.controls.newpw.value">Must have at least one uppercase, lowercase, special character, and number</li>
+                  <li *ngIf="formUpdatePw.errors?.passwordNotChange && formUpdatePw.controls.newpw.value">New password is the same old password</li>
+                </ul>
+              </div>
+            </div>
+            <!-- corfirm password -->
+            <div class="form-group">
+              <label for="confirmpw">Confirm password</label>
+              <div [ngClass]="{'has-error': (formUpdatePw.controls.confirmpw.errors && formUpdatePw.controls.confirmpw.dirty) || (formUpdatePw.errors?.matchingPasswords && formUpdatePw.controls.confirmpw.value), 'has-success': !formUpdatePw.controls.confirmpw.errors && !formUpdatePw.errors?.matchingPasswords}">
+                <input [ngClass]="{'state-valid': !formUpdatePw.controls.confirmpw.errors && !formUpdatePw.errors?.matchingPasswords}" type="password" name="confirmpw" class="form-control" autocomplete="off" placeholder="*Confirm password" formControlName="confirmpw">
+                <ul class="help-block">
+                  <li *ngIf="formUpdatePw.controls.confirmpw.errors?.required && formUpdatePw.controls.confirmpw.dirty">This field is required</li>
+                  <li *ngIf="formUpdatePw.errors?.matchingPasswords && formUpdatePw.controls.confirmpw.value">Password incorrect</li>
+                </ul>
+              </div>
+            </div>
+            <input  [disabled]="!formUpdatePw.valid || proccessing" type="submit" class="btn btn-primary" value="Submit">
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Delete Confirm Model -->

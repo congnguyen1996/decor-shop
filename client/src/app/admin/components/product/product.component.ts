@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
 import { CatagoryService } from '../../../services/catagory.service';
 import { FileUploadService } from '../../../services/file-upload.service';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../../services/user.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({

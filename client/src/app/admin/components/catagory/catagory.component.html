@@ -1,15 +1,14 @@
 
 <div class="my-3 my-md-5">
     <div class="container">
+      <div>
+        <button class="btn btn-success" data-toggle="modal" data-target="#create-catagory-model"><i class="fa fa-plus" aria-hidden="true"></i> Create new catagory</button>
+      </div>
       <div class="page-header">
         <h1 class="page-title">
           Catagory List
         </h1>
       </div>
-      <div>
-          <button class="btn btn-success" data-toggle="modal" data-target="#create-catagory-model"><i class="fa fa-plus" aria-hidden="true"></i> Create new catagory</button>
-      </div>
-      <br>
       <!-- Custom Success/Error Message -->
       <div *ngIf="message" [ngClass]="messageClass">
           <button type="button" class="close" (click)="removeMessage()"></button>

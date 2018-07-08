@@ -16,7 +16,15 @@ export class AuthService {
   constructor(
     private http: Http,
     private utilService: UtilService
-  ) {}
+  ) {
+    this.loadUser();
+  }
+
+  loadUser() {
+    if (localStorage.getItem(btoa('user'))) {
+      this.user = JSON.parse(atob(localStorage.getItem(btoa('user'))));
+    }
+  }
 
   createAuthenticationHeaders() {
     this.loadToken(); // Get token so it can be attached to headers
@@ -44,8 +52,9 @@ export class AuthService {
 
   // Function to register
   registerUser(user) {
+    this.createAuthenticationHeaders();
     return this.utilService
-    .getHttpPromise(this.http.post(this.domain + 'api/auth/register', user)
+    .getHttpPromise(this.http.post(this.domain + 'api/auth/register', user, this.options)
     .pipe(map(res => res.json())));
   }
 

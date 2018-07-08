@@ -1,6 +1,7 @@
 // Accessing the Service the we just created
 
 var ProductService = require('../services/product.service');
+var FileUpload = require('../services/fileupload.service');
 
 // saving the context of this module inside _the variable
 
@@ -129,6 +130,7 @@ exports.uploadProductImages = async function(req, res, next) {
     var images = [];
     for (let i = 0; i < files.length; i++) {
         images.push(files[i].filename);
+        FileUpload.resize(files[i].path, null, 90);
     }
     res.status(200).json({status: 200, data: images, message: "Successfully uploaded file!"});
 }

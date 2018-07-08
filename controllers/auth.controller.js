@@ -24,16 +24,24 @@ _this = this;
     if(!req.body.fullname) {
         return res.status(400).json({status: 400, message: "You must provide a fullname"});
     }
+    if(!req.body.role) {
+        return res.status(400).json({status: 400, message: "You must provide a role"});
+    }
 
     //Req.body contains the form submit values
     var user = {
         username: req.body.username.toLowerCase(),
         password: req.body.password,
-        fullname: req.body.fullname
+        fullname: req.body.fullname,
+        role: req.body.role
     }
 
     // Calling the Service function with the new object from the Request Body
     try {
+        var admin = await UserService.findUserById(req.decoded.userId);
+        if (!admin || admin.role !== "0") {
+            return res.status(400).json({status: 400, message: "You have NO this permission!"});
+        }
         var createdUser = await UserService.createUser(user);
         return res.status(201).json({status: 201, data: {createdUser: createdUser}, message:"Successfully created user!"});
     } catch (error) {
@@ -60,8 +68,8 @@ exports.login = async function(req, res, next) {
         if(!user) {
             return res.status(200).json({status: 200, success: false, message: "Username or Email invalid"});
         }
-        const token = jwt.sign({userId: user._id }, config.secret, { expiresIn: '24h' }); // Create a token for client
-        res.status(200).json({status: 200, success: true, data: { token: token, user: {username: user.username, role: user.role}}, message: "Success!"});
+        const token = jwt.sign({userId: user._id }, config.secret, { expiresIn: '168h' }); // Create a token for client
+        res.status(200).json({status: 200, success: true, data: { token: token, user: {username: user.username, fullname: user.fullname, role: user.role}}, message: "Success!"});
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});
     }

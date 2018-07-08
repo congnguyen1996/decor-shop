@@ -3,6 +3,6 @@ const crypto = require('crypto').randomBytes(256).toString('hex'); // Provides c
 // Export config object
 module.exports = {
   uri: process.env.databaseUri, // Databse URI and database name
-  secret: 'noprovide', // Cryto-created secret
+  secret: 'cypto', // Cryto-created secret
   db: process.env.databaseName // Database name
 }

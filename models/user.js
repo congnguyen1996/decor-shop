@@ -95,7 +95,7 @@ const userSchema = new Schema({
   password: { type: String, required: true,  validate: passwordValidators },
   fullname: { type: String, required: true },
   createAt: { type: Date, default: Date.now()},
-  role: { type: String, default: 'ADMIN', required: true }
+  role: { type: String, default: '3', required: true }
 }, {
   usePushEach: true
 });

@@ -6,7 +6,7 @@ var router = express.Router();
 var AuthController = require('../../controllers/auth.controller');
 
 // Map each API to the Controller function
-router.post('/register', AuthController.register);
+router.post('/register',[AuthController.checkToken, AuthController.register]);
 router.post('/login', AuthController.login);
 router.get('/check-username/:username', AuthController.checkUsername);
 router.get('/check-loggedin', [AuthController.checkToken, AuthController.checkLoggedIn]);

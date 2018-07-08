@@ -82,7 +82,7 @@ exports.updateCatagory = async function(catagory) {
         if (catagory.parentid) {
             oldCatagory.parentid = catagory.parentid;
         }
-        var savedCatagory = await oldCatagory.save();
+        var savedCatagory = await oldCatagory.update();
         return savedCatagory;
     } catch (error) {
         throw Error('Error occured while updating the Catagory: ' + error);

@@ -1,144 +1,206 @@
 
-    <div class="my-3 my-md-5">
-        <div class="container">
-          <div class="page-header">
-            <h1 class="page-title">
-              User List
-            </h1>
-          </div>
-          <div>
-              <button class="btn btn-success" data-toggle="modal" data-target="#register-model"><i class="fa fa-plus" aria-hidden="true"></i> Create new user</button>
-          </div>
-          <br>
-          <!-- Custom Success/Error Message -->
-          <div *ngIf="message" [ngClass]="messageClass">
-              <button type="button" class="close" (click)="removeMessage()"></button>
-              {{ message }}
-          </div>
-          <div class="row row-cards row-deck">
-            <div class="col-12">
-              <div class="card">
-                <div class="table-responsive">
-                  <!-- Table display list user -->
-                  <table class="table">
-                      <thead>
-                        <tr>
-                          <th class="text-center" scope="col">No</th>
-                          <th class="text-center" scope="col">Username</th>
-                          <th class="text-center" scope="col">Fullname</th>
-                          <th class="text-center" scope="col">Role</th>
-                          <th class="text-center" scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let user of listUser; index as i">
-                            <th class="text-center" scope="row">{{ i*page + 1 }}</th>
-                            <td class="text-center">{{ user.username }}</td>
-                            <td class="text-center">{{ user.fullname }}</td>
-                            <td class="text-center">{{ user.role }}</td>
-                            <td class="action text-center">
-                                <!-- <button class="btn btn-warning btn-sm">Edit</button> -->
-                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectUser(user, 'delete')">Delete</button>
-                            </td>
-                          </tr>
-                      </tbody>
-                    </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Pagination -->
-        <div *ngIf="pages > 1">
-          <ul class="pagination justify-content-center">
-              <li *ngIf="page > 0" class="page-item"><a class="page-link" href="#">Previous</a></li>
-              <li *ngIf="page >= 2" class="page-item"><a class="page-link" href="#">{{ page - 2 }}</a></li>
-              <li *ngIf="page >= 1" class="page-item"><a class="page-link" href="#">{{ page - 1 }}</a></li>
-              <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
-              <li *ngIf="page < pages - 2" class="page-item"><a class="page-link" href="#">{{ page + 1 }}</a></li>
-              <li *ngIf="page < pages - 1" class="page-item"><a class="page-link" href="#">{{ page + 2 }}</a></li>
-              <li *ngIf="page < pages" class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </div>
-        <!-- End pagination -->
-      </div>
-      
-      <!-- The Register Model -->
-      <div class="modal" id="register-model">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-              <h4 class="modal-title">Create new user</h4>
-              <button type="button" class="close" data-dismiss="modal"></button>
-            </div>
-            <!-- Modal body -->
-            <div class="modal-body">
-              <!-- form add user -->
-              <form [formGroup]="formCreateUser" (submit)="onSumbitCreateUser()">
-                <div class="form-group">
-                  <label for="username">Username</label>
-                  <div [ngClass]="{'has-error': (formCreateUser.controls.username.errors && formCreateUser.controls.username.dirty) || (!usernameValid && formCreateUser.controls.username.value), 'has-success': !formCreateUser.controls.username.errors && usernameValid}">
-                    <input [ngClass]="{'state-valid': !formCreateUser.controls.username.errors && usernameValid}" type="text" name="username" class="form-control" autocomplete="off" placeholder="*Username" formControlName="username"
-                      (keyup)="checkUsername()">
-                      <ul class="help-block">
-                        <li *ngIf="formCreateUser.controls.username.errors?.required && formCreateUser.controls.username.dirty">This field is required</li>
-                        <li *ngIf="formCreateUser.controls.username.errors?.minlength && formCreateUser.controls.username.value || formCreateUser.controls.username.errors?.maxlength && formCreateUser.controls.username.value ">Username must be at least 5 characters but no more than 20</li>
-                        <li *ngIf="formCreateUser.controls.username.errors?.validateUsername && formCreateUser.controls.username.value">Username must not have any special characters</li>
-                        <li *ngIf="usernameMessage && formCreateUser.controls.username.valid">{{ usernameMessage }}</li>
-                      </ul>
-                  </div>
-                </div>
-                <!-- fullname input -->
-                <div class="form-group">
-                  <label for="fullname">Fullname</label>
-                  <div [ngClass]="{'has-error': (formCreateUser.controls.fullname.errors && formCreateUser.controls.fullname.dirty), 'has-success': !formCreateUser.controls.fullname.errors}">
-                    <input [ngClass]="{'state-valid': !formCreateUser.controls.fullname.errors}" type="text" name="fullname" class="form-control" autocomplete="off" placeholder="*Fullname" formControlName="fullname">
-                    <ul class="help-block">
-                      <li *ngIf="formCreateUser.controls.fullname.errors?.required && formCreateUser.controls.fullname.dirty">This field is required</li>
-                      <li *ngIf="formCreateUser.controls.fullname.fullname?.minlength && formCreateUser.controls.fullname.value || formCreateUser.controls.fullname.errors?.maxlength && formCreateUser.controls.fullname.value ">Username must be at least 5 characters but no more than 30</li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <div [ngClass]="{'has-error': (formCreateUser.controls.password.errors && formCreateUser.controls.password.dirty), 'has-success': !formCreateUser.controls.password.errors}">
-                    <input [ngClass]="{'state-valid': !formCreateUser.controls.password.errors}" type="password" name="password" class="form-control" autocomplete="off" placeholder="*Password" formControlName="password">
-                    <ul class="help-block">
-                      <li *ngIf="formCreateUser.controls.password.errors?.required && formCreateUser.controls.password.dirty">This field is required</li>
-                      <li *ngIf="formCreateUser.controls.password.errors?.minlength && formCreateUser.controls.password.value || formCreateUser.controls.password.errors?.maxlength && formCreateUser.controls.password.value ">Password must be at least 8 characters but no more than 35</li>
-                      <li *ngIf="formCreateUser.controls.password.errors?.validatePassword && formCreateUser.controls.password.value">Must have at least one uppercase, lowercase, special character, and number</li>
-                    </ul>
-                  </div>
-                </div>
-                <input  [disabled]="!formCreateUser.valid || !usernameValid || proccessing" type="submit" class="btn btn-primary" value="Submit">
-              </form>
-            </div>
+<div class="my-3 my-md-5">
+  <div class="container">
+    <div *ngIf="authService.user.role === '0'">
+      <button class="btn btn-success" data-toggle="modal" data-target="#register-model"><i class="fa fa-plus" aria-hidden="true"></i> Create new user</button>
+    </div>
+    <div class="page-header">
+      <h1 class="page-title">
+        User List
+      </h1>
+    </div>
+    <!-- Custom Success/Error Message -->
+    <div *ngIf="message" [ngClass]="messageClass">
+        <button type="button" class="close" (click)="removeMessage()"></button>
+        {{ message }}
+    </div>
+    <div class="row row-cards row-deck">
+      <div class="col-12">
+        <div class="card">
+          <div class="table-responsive">
+            <!-- Table display list user -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="text-center" scope="col">No</th>
+                  <th class="text-center" scope="col">Username</th>
+                  <th class="text-center" scope="col">Fullname</th>
+                  <th class="text-center" scope="col">Role</th>
+                  <th *ngIf="authService.user.role === '0'" class="text-center" scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of listUser; index as i">
+                  <th class="text-center" scope="row">{{ i*page + 1 }}</th>
+                  <td class="text-center">{{ user.username }}</td>
+                  <td class="text-center">{{ user.fullname }}</td>
+                  <td class="text-center">{{ listRoleObj[user.role] }}</td>
+                  <td *ngIf="authService.user.role === '0'" class="action text-center">
+                    <div *ngIf="user.role !== '0'">
+                      <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#update-user-model" (click)="selectUser(user, 'update')">Edit</button>
+                      <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectUser(user, 'delete')">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      <!-- End Register Model -->
-      
-      <!-- Delete User Confirm Model -->
-      <div class="modal" id="delete-confirm-model">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-              <h4 class="modal-title text-danger">WARNING</h4>
-              <button type="button" class="close" data-dismiss="modal"></button>
-            </div>
-            <!-- Modal body -->
-            <div class="modal-body">
-              <div>Username: {{ selectedUser?.username }}</div>
-              Are you sure delete this user?
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" (click)="onDeleteUser()">Agree</button>
-              <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Cancle</button>
-            </div> 
-          </div>
-        </div>
+    </div>
+  </div>
+    <!-- Pagination -->
+    <div *ngIf="pages > 1">
+      <ul class="pagination justify-content-center">
+          <li *ngIf="page > 3" class="page-item"><span class="page-link" (click)="setPage(1)">First</span></li>
+          <li *ngIf="page > 2" class="page-item"><span class="page-link" (click)="setPage(page-2)">{{ page - 2 }}</span></li>
+          <li *ngIf="page > 1" class="page-item"><span class="page-link" (click)="setPage(page-1)">{{ page - 1 }}</span></li>
+          <li class="page-item active"><span class="page-link">{{ page }}</span></li>
+          <li *ngIf="page + 1 <= pages" class="page-item"><span class="page-link" (click)="setPage(page+1)">{{ page + 1 }}</span></li>
+          <li *ngIf="page + 2 <= pages" class="page-item"><span class="page-link" (click)="setPage(page+2)">{{ page + 2 }}</span></li>
+          <li *ngIf="page + 2 < pages" class="page-item"><span class="page-link" (click)="setPage(pages)">Last</span></li>
+        </ul>
+    </div>
+    <!-- End pagination -->
+</div>
+
+<!-- The Register Model -->
+<div class="modal" id="register-model">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Create new user</h4>
+        <button type="button" class="close" data-dismiss="modal"></button>
       </div>
-      <!-- End Delete Confirm Model -->
+      <!-- Modal body -->
+      <div class="modal-body">
+        <!-- form add user -->
+        <form [formGroup]="formCreateUser" (submit)="onSumbitCreateUser()">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <div [ngClass]="{'has-error': (formCreateUser.controls.username.errors && formCreateUser.controls.username.dirty) || (!usernameValid && formCreateUser.controls.username.value), 'has-success': !formCreateUser.controls.username.errors && usernameValid}">
+              <input [ngClass]="{'state-valid': !formCreateUser.controls.username.errors && usernameValid}" type="text" name="username" class="form-control" autocomplete="off" placeholder="*Username" formControlName="username"
+                (keyup)="checkUsername('create')">
+                <ul class="help-block">
+                  <li *ngIf="formCreateUser.controls.username.errors?.required && formCreateUser.controls.username.dirty">This field is required</li>
+                  <li *ngIf="formCreateUser.controls.username.errors?.minlength && formCreateUser.controls.username.value || formCreateUser.controls.username.errors?.maxlength && formCreateUser.controls.username.value ">Username must be at least 5 characters but no more than 20</li>
+                  <li *ngIf="formCreateUser.controls.username.errors?.validateUsername && formCreateUser.controls.username.value">Username must not have any special characters</li>
+                  <li *ngIf="usernameMessage && formCreateUser.controls.username.valid">{{ usernameMessage }}</li>
+                </ul>
+            </div>
+          </div>
+          <!-- fullname input -->
+          <div class="form-group">
+            <label for="fullname">Fullname</label>
+            <div [ngClass]="{'has-error': (formCreateUser.controls.fullname.errors && formCreateUser.controls.fullname.dirty), 'has-success': !formCreateUser.controls.fullname.errors}">
+              <input [ngClass]="{'state-valid': !formCreateUser.controls.fullname.errors}" type="text" name="fullname" class="form-control" autocomplete="off" placeholder="*Fullname" formControlName="fullname">
+              <ul class="help-block">
+                <li *ngIf="formCreateUser.controls.fullname.errors?.required && formCreateUser.controls.fullname.dirty">This field is required</li>
+                <li *ngIf="formCreateUser.controls.fullname.fullname?.minlength && formCreateUser.controls.fullname.value || formCreateUser.controls.fullname.errors?.maxlength && formCreateUser.controls.fullname.value ">Full name must be at least 5 characters but no more than 30</li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div [ngClass]="{'has-error': (formCreateUser.controls.password.errors && formCreateUser.controls.password.dirty), 'has-success': !formCreateUser.controls.password.errors}">
+              <input [ngClass]="{'state-valid': !formCreateUser.controls.password.errors}" type="password" name="password" class="form-control" autocomplete="off" placeholder="*Password" formControlName="password">
+              <ul class="help-block">
+                <li *ngIf="formCreateUser.controls.password.errors?.required && formCreateUser.controls.password.dirty">This field is required</li>
+                <li *ngIf="formCreateUser.controls.password.errors?.minlength && formCreateUser.controls.password.value || formCreateUser.controls.password.errors?.maxlength && formCreateUser.controls.password.value ">Password must be at least 8 characters but no more than 35</li>
+                <li *ngIf="formCreateUser.controls.password.errors?.validatePassword && formCreateUser.controls.password.value">Must have at least one uppercase, lowercase, special character, and number</li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role</label>
+            <div>
+              <select formControlName="role" class="form-control custom-select" name="role">
+                <option *ngFor="let role of listRole" [value]="role.rolekey">{{ role.rolevalue }}</option>
+              </select>
+            </div>
+          </div>
+          <input  [disabled]="!formCreateUser.valid || !usernameValid || proccessing" type="submit" class="btn btn-primary" value="Submit">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Register Model -->
+
+<!-- The Update User Model -->
+<div class="modal" id="update-user-model">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Update User</h4>
+        <button type="button" class="close" data-dismiss="modal"></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <!-- form update user -->
+        <form [formGroup]="formUpdateUser" (submit)="onSumbitUpdateUser()">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <div [ngClass]="{'has-error': (formUpdateUser.controls.username.errors && formUpdateUser.controls.username.dirty) || (!usernameValid && formUpdateUser.controls.username.value), 'has-success': !formUpdateUser.controls.username.errors && usernameValid}">
+              <input [ngClass]="{'state-valid': !formUpdateUser.controls.username.errors && usernameValid}" type="text" name="username" class="form-control" autocomplete="off" placeholder="*Username" formControlName="username"
+                (keyup)="checkUsername('update')">
+                <ul class="help-block">
+                  <li *ngIf="formUpdateUser.controls.username.errors?.required && formUpdateUser.controls.username.dirty">This field is required</li>
+                  <li *ngIf="formUpdateUser.controls.username.errors?.minlength && formUpdateUser.controls.username.value || formUpdateUser.controls.username.errors?.maxlength && formUpdateUser.controls.username.value ">Username must be at least 5 characters but no more than 20</li>
+                  <li *ngIf="formUpdateUser.controls.username.errors?.validateUsername && formUpdateUser.controls.username.value">Username must not have any special characters</li>
+                  <li *ngIf="usernameMessage && formUpdateUser.controls.username.valid">{{ usernameMessage }}</li>
+                </ul>
+            </div>
+          </div>
+          <!-- fullname input -->
+          <div class="form-group">
+            <label for="fullname">Fullname</label>
+            <div [ngClass]="{'has-error': (formUpdateUser.controls.fullname.errors && formUpdateUser.controls.fullname.dirty), 'has-success': !formUpdateUser.controls.fullname.errors}">
+              <input [ngClass]="{'state-valid': !formUpdateUser.controls.fullname.errors}" type="text" name="fullname" class="form-control" autocomplete="off" placeholder="*Fullname" formControlName="fullname">
+              <ul class="help-block">
+                <li *ngIf="formUpdateUser.controls.fullname.errors?.required && formUpdateUser.controls.fullname.dirty">This field is required</li>
+                <li *ngIf="formUpdateUser.controls.fullname.fullname?.minlength && formUpdateUser.controls.fullname.value || formUpdateUser.controls.fullname.errors?.maxlength && formUpdateUser.controls.fullname.value ">Full name must be at least 5 characters but no more than 30</li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role</label>
+            <div>
+              <select formControlName="role" class="form-control custom-select" name="role">
+                <option *ngFor="let role of listRole" [value]="role.rolekey">{{ role.rolevalue }}</option>
+              </select>
+            </div>
+          </div>
+          <input  [disabled]="!formUpdateUser.valid || !usernameValid || proccessing" type="submit" class="btn btn-primary" value="Submit">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Register Model -->
+
+<!-- Delete User Confirm Model -->
+<div class="modal" id="delete-confirm-model">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title text-danger">WARNING</h4>
+        <button type="button" class="close" data-dismiss="modal"></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div>Username: {{ selectedUser?.username }}</div>
+        Are you sure delete this user?
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" (click)="onDeleteUser()">Agree</button>
+        <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Cancle</button>
+      </div> 
+    </div>
+  </div>
+</div>
+<!-- End Delete Confirm Model -->

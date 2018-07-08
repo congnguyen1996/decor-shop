@@ -10,7 +10,6 @@ import { map } from 'rxjs/internal/operators/map';
 export class CatagoryService {
   domain = environment.domain;
   authToken;
-  user;
   options;
 
   constructor(

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { environment } from '../../../environments/environment';
-import { UtilService } from './../../services/util.service';
+import { environment } from '../../environments/environment';
+import { UtilService } from './../services/util.service';
 import { map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
   domain = environment.domain;
   authToken;
-  user;
   options;
 
   constructor(
@@ -44,6 +45,13 @@ export class UserService {
   updateUser(user) {
     return this.utilService
     .getHttpPromise(this.http.put(this.domain + 'api/user/update', user, this.options)
+    .pipe(map(res => res.json())));
+  }
+
+  updatePassword(data) {
+    this.createAuthenticationHeaders();
+    return this.utilService
+    .getHttpPromise(this.http.put(this.domain + 'api/user/update-pw', data, this.options)
     .pipe(map(res => res.json())));
   }
 

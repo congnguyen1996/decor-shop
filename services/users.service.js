@@ -67,7 +67,8 @@ exports.createUser = async function(user) {
     var newUser = new User({
         username: user.username,
         password: user.password,
-        fullname: user.fullname
+        fullname: user.fullname,
+        role: user.role
     });
     // Saving the user
     try {
@@ -81,16 +82,15 @@ exports.createUser = async function(user) {
 }
 
 exports.updateUser = async function(user) {
-    var id = user.id;
     try {
         // Find the old User Object by ID
-        var oldUser = await User.findById(id);
+        var oldUser = await User.findById(user._id);
     } catch (error) {
         throw Error('Error occured while Finding the User: ' + error);
     }
     // If no old User Object exists return false
     if(!oldUser) {
-        return false;
+        throw Error('Something wrong: ' + error);
     }
     // Edit the oldUser Object
     if (user.username) {
@@ -104,10 +104,24 @@ exports.updateUser = async function(user) {
     }
    
     try {
-        var savedUser = await oldUser.save();
-        return savedUser;
+        var updatedUser = await oldUser.update();
+        return updatedUser;
     } catch (error) {
         throw Error('Error occured while updating the User: ' + error);
+    }
+}
+
+exports.updatePassword = async function(userId, oldpw, newpw) {
+    try {
+        var user = await User.findById(userId);
+        if (!user.comparePassword(oldpw)) {
+            throw String('Old password incorrect!');
+        }
+        user.password = newpw;
+        var updatedUser = await user.save();
+        return updatedUser;
+    } catch (error) {
+        throw Error(error);
     }
 }
 
@@ -116,7 +130,7 @@ exports.deleteUser = async function(id) {
     try {
         var deleted = await User.remove({_id: id});
         if(deleted.n === 0) {
-            throw Error('User could not be deleted');
+            throw String('User could not be deleted');
         }
     } catch (error) {
         throw Error('Error occured while delete the User: ' + error);
