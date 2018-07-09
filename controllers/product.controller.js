@@ -130,7 +130,13 @@ exports.uploadProductImages = async function(req, res, next) {
     var images = [];
     for (let i = 0; i < files.length; i++) {
         images.push(files[i].filename);
-        FileUpload.resize(files[i].path, null, 90);
+
     }
+    // for (let i = 0; i < files.length; i++) {
+    //     FileUpload.resize(files[i].path, null, 720);
+    // }
+    // for (let i = 0; i < files.length; i++) {
+    //     FileUpload.resize(files[i].path, null, 30);
+    // }
     res.status(200).json({status: 200, data: images, message: "Successfully uploaded file!"});
 }

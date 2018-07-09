@@ -22,7 +22,7 @@ export class AuthService {
 
   loadUser() {
     if (localStorage.getItem(btoa('user'))) {
-      this.user = JSON.parse(atob(localStorage.getItem(btoa('user'))));
+      this.user = JSON.parse(localStorage.getItem(btoa('user')));
     }
   }
 
@@ -44,8 +44,8 @@ export class AuthService {
 
   // Function to store user's data in client local storage
   storeUserData(token, user) {
-    localStorage.setItem(btoa('token'), token); // Set token in local storage
-    localStorage.setItem(btoa('user'), btoa(JSON.stringify(user))); // Set user in local storage as string
+    localStorage.setItem(btoa('token'), token); // Set token in local
+    localStorage.setItem(btoa('user'), JSON.stringify(user)); // Set user in local storage as string
     this.authToken = token; // Assign token to be used elsewhere
     this.user = user; // Set user to be used elsewhere
   }

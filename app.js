@@ -20,7 +20,7 @@ var app = express();
 
 // cors
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
@@ -40,7 +40,7 @@ app.use('/api', api);
 
 // app route
 app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/guest/index.html'));
+  res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
 // catch 404 and forward to error handler

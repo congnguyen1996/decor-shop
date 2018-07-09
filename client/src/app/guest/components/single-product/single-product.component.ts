@@ -12,8 +12,8 @@ export class SingleProductComponent implements OnInit {
 
   currentUrl;
   product;
-  // productImageUrl = environment.productImageUrl;
-  productImageUrl = 'http://localhost:3000/images/upload/test/';
+  productImageUrl = environment.productImageUrl;
+  // productImageUrl = 'http://localhost:3000/images/upload/test/';
 
   constructor(
     private activatedRoute: ActivatedRoute,

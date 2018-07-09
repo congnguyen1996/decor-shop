@@ -11,8 +11,7 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  // productImageUrl = environment.productImageUrl;
-  productImageUrl = 'http://localhost:3000/images/upload/test/';
+  productImageUrl = environment.productImageUrl + 'x720/';
 
   listProduct;
   listCatagory;

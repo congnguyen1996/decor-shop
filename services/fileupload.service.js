@@ -6,6 +6,9 @@ const pathConfig = require('../config/path');
 
 exports.storageProductImages = multer.diskStorage({
   destination: function (req, file, cb) {
+    if (!fs.existsSync(pathConfig.PRODUCTS_IMAGE_PATH)) {
+      fs.mkdir(pathConfig.PRODUCTS_IMAGE_PATH);
+    }
     cb(null, pathConfig.PRODUCTS_IMAGE_PATH)
   },
   filename: function (req, file, cb) {

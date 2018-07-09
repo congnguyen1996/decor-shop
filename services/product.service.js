@@ -115,7 +115,13 @@ exports.deleteProduct = async function(id) {
 }
 
 exports.removeProductImages = async function(fileNames) {
-    for(let i = 0; i < fileNames.length; i++) {
-       fs.unlinkSync(pathConfig.PRODUCTS_IMAGE_PATH + fileNames[i]);
+    for (let i = 0; i < fileNames.length; i++) {
+        fs.unlinkSync(pathConfig.PRODUCTS_IMAGE_PATH + fileNames[i]);
     }
+    // for (let i = 0; i < fileNames.length; i++) {
+    //     fs.unlinkSync(pathConfig.PRODUCTS_IMAGE_PATH + "/x720" + fileNames[i]);
+    // }
+    // for (let i = 0; i < fileNames.length; i++) {
+    //     fs.unlinkSync(pathConfig.PRODUCTS_IMAGE_PATH + "/x30" + fileNames[i]);
+    // }
 }
