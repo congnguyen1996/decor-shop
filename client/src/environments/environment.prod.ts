@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  domain: 'https://uncledecor.herokuapp.com/',
-  commonImageUrl: 'https://uncledecor.herokuapp.com/assets/images/common/',
-  productImageUrl: 'https://uncledecor.herokuapp.com/assets/images/upload/products/'
+  domain: 'http://uncledecor.com/',
+  commonImageUrl: 'http://uncledecor.com/assets/images/common/',
+  productImageUrl: 'http://uncledecor.com/assets/images/upload/products/'
 };
