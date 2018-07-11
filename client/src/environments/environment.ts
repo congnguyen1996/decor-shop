@@ -4,13 +4,13 @@
 
 export const environment = {
   production: false,
-  // domain: 'http://localhost:3000/',
-  // commonImageUrl: 'http://localhost:3000/assets/images/common/',
-  // productImageUrl: 'http://localhost:3000/assets/images/upload/products/'
+  domain: '67.209.127.191:3000/',
+  commonImageUrl: '67.209.127.191:3000/assets/images/common/',
+  productImageUrl: 'http://67.209.127.191:3000/assets/images/upload/products/'
 
-  domain: 'https://uncledecor.herokuapp.com/',
-  commonImageUrl: 'https://uncledecor.herokuapp.com/assets/images/common/',
-  productImageUrl: 'https://uncledecor.herokuapp.com/assets/images/upload/products/'
+  // domain: 'https://uncledecor.herokuapp.com/',
+  // commonImageUrl: 'https://uncledecor.herokuapp.com/assets/images/common/',
+  // productImageUrl: 'https://uncledecor.herokuapp.com/assets/images/upload/products/'
 };
 
 /*
