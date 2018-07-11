@@ -1214,9 +1214,9 @@ __webpack_require__.r(__webpack_exports__);
 // The list of file replacements can be found in `angular.json`.
 var environment = {
     production: false,
-    domain: '67.209.127.191:3000/',
-    commonImageUrl: '67.209.127.191:3000/assets/images/common/',
-    productImageUrl: 'http://67.209.127.191:3000/assets/images/upload/products/'
+    domain: 'http://uncledecor.com:3000/',
+    commonImageUrl: 'http://uncledecor.com:3000/assets/images/common/',
+    productImageUrl: 'http://uncledecor.com:3000/assets/images/upload/products/'
     // domain: 'https://uncledecor.herokuapp.com/',
     // commonImageUrl: 'https://uncledecor.herokuapp.com/assets/images/common/',
     // productImageUrl: 'https://uncledecor.herokuapp.com/assets/images/upload/products/'
@@ -1265,7 +1265,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\admin\Desktop\Study\project\decorshop\client\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! C:\Users\admin\Desktop\Study\decor-shop\client\src\main.ts */"./src/main.ts");
 
 
 /***/ })

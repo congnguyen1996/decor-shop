@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  domain: '67.209.127.191:3000/',
-  commonImageUrl: '67.209.127.191:3000/assets/images/common/',
-  productImageUrl: 'http://67.209.127.191:3000/assets/images/upload/products/'
+  domain: 'http://uncledecor.com:3000/',
+  commonImageUrl: 'http://uncledecor.com:3000/assets/images/common/',
+  productImageUrl: 'http://uncledecor.com:3000/assets/images/upload/products/'
 
   // domain: 'https://uncledecor.herokuapp.com/',
   // commonImageUrl: 'https://uncledecor.herokuapp.com/assets/images/common/',

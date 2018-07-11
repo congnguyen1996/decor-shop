@@ -621,9 +621,9 @@ if(false) {}
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\admin\Desktop\Study\project\decorshop\client\src\styles.css */"./src/styles.css");
-__webpack_require__(/*! C:\Users\admin\Desktop\Study\project\decorshop\client\src\assets\css\dashboard.css */"./src/assets/css/dashboard.css");
-module.exports = __webpack_require__(/*! C:\Users\admin\Desktop\Study\project\decorshop\client\node_modules\font-awesome\css\font-awesome.min.css */"./node_modules/font-awesome/css/font-awesome.min.css");
+__webpack_require__(/*! C:\Users\admin\Desktop\Study\decor-shop\client\src\styles.css */"./src/styles.css");
+__webpack_require__(/*! C:\Users\admin\Desktop\Study\decor-shop\client\src\assets\css\dashboard.css */"./src/assets/css/dashboard.css");
+module.exports = __webpack_require__(/*! C:\Users\admin\Desktop\Study\decor-shop\client\node_modules\font-awesome\css\font-awesome.min.css */"./node_modules/font-awesome/css/font-awesome.min.css");
 
 
 /***/ })
