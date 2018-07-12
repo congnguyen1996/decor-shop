@@ -1,6 +1,7 @@
 // Getting the Newly created Mongoose Model we just created
 var Product = require('../models/product');
 var fs = require('fs');
+var path = require('path');
 const pathConfig = require('../config/path');
 
 // Saving the context of this module inside _the variable
@@ -116,12 +117,20 @@ exports.deleteProduct = async function(id) {
 
 exports.removeProductImages = async function(fileNames) {
     for (let i = 0; i < fileNames.length; i++) {
-        fs.unlinkSync(pathConfig.PRODUCTS_IMAGE_PATH + fileNames[i]);
+        fs.unlink(path.join(pathConfig.PRODUCTS_IMAGE_PATH, "full_size/", fileNames[i]), function(err){
+            if (err) {
+                console.log(err);
+            }
+        });
+        fs.unlink(path.join(pathConfig.PRODUCTS_IMAGE_PATH, "x720/", fileNames[i]), function(err){
+            if (err) {
+                console.log(err);
+            }
+        });
+        fs.unlink(path.join(pathConfig.PRODUCTS_IMAGE_PATH, "x30/", fileNames[i]), function(err){
+            if (err) {
+                console.log(err);
+            }
+        });
     }
-    // for (let i = 0; i < fileNames.length; i++) {
-    //     fs.unlinkSync(pathConfig.PRODUCTS_IMAGE_PATH + "/x720" + fileNames[i]);
-    // }
-    // for (let i = 0; i < fileNames.length; i++) {
-    //     fs.unlinkSync(pathConfig.PRODUCTS_IMAGE_PATH + "/x30" + fileNames[i]);
-    // }
 }

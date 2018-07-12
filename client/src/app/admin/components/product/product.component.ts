@@ -48,8 +48,7 @@ export class ProductComponent implements OnInit {
     sortByDate: 'desc'
   };
   searchInput;
-  productImagesUrl = environment.productImageUrl;
-  // productImagesUrl = 'http://localhost:3000/images/upload/test/';
+  productImagesUrl = environment.productImageUrl + 'x30/';
 
   constructor(
     private formBuilder: FormBuilder,

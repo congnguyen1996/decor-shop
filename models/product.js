@@ -13,7 +13,7 @@ const productSchema = new Schema({
     catagoryid: { type: String,  required: true },
     price: {
         unit: String,
-        value: Number
+        value: String
     },
     images: [String],
     detail: String,

@@ -156,7 +156,7 @@ var ProductsComponent = /** @class */ (function () {
         this.productService = productService;
         this.catagoryService = catagoryService;
         this.router = router;
-        this.productImageUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].productImageUrl;
+        this.productImageUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].productImageUrl + 'x720/';
         this.listCatagoryObj = {};
         this.query = null;
         this.limit = 20;
@@ -236,6 +236,9 @@ var ProductsComponent = /** @class */ (function () {
         }
     };
     ProductsComponent.prototype.filterByCatagory = function () {
+        if (this.filterInput.filterByCatagory === '') {
+            return;
+        }
         if (this.filterInput.filterByCatagory === 'all') {
             this.query = null;
         }
@@ -361,11 +364,10 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 var SingleProductComponent = /** @class */ (function () {
-    // productImageUrl = 'http://localhost:3000/images/upload/test/';
     function SingleProductComponent(activatedRoute, productService) {
         this.activatedRoute = activatedRoute;
         this.productService = productService;
-        this.productImageUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].productImageUrl;
+        this.productImageUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].productImageUrl + 'full_size/';
     }
     SingleProductComponent.prototype.ngOnInit = function () {
         this.currentUrl = this.activatedRoute.snapshot.params;

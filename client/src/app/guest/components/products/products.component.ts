@@ -11,7 +11,7 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  productImageUrl = environment.productImageUrl;
+  productImageUrl = environment.productImageUrl + 'x720/';
 
   listProduct;
   listCatagory;
@@ -85,6 +85,9 @@ export class ProductsComponent implements OnInit {
   }
 
   filterByCatagory() {
+    if (this.filterInput.filterByCatagory === '') {
+      return;
+    }
     if (this.filterInput.filterByCatagory === 'all') {
       this.query = null;
     } else {

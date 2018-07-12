@@ -59,7 +59,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n  <footer class=\"header\">\n      <div class=\"container\">\n        <div class=\"row\">\n        <div class=\"col-lg-10 col-sm-8\">\n            Copyright © 2018 Uncle Decor\n          </div>\n          <div class=\"col-lg-2 col-sm-4\">\n              Design by <a href=\"#\">Hot Dog</a>      \n          </div>\n        </div>\n      </div>\n    </footer>\n"
+module.exports = "\n  <footer class=\"header\">\n      <div class=\"container\">\n        <div class=\"row\">\n        <div class=\"col-lg-10 col-sm-8\">\n            Copyright © 2018 Uncle Decor\n          </div>\n          <div class=\"col-lg-2 col-sm-4\">\n              Design by <a href=\"#\">Uncle Decor</a>      \n          </div>\n        </div>\n      </div>\n    </footer>\n"
 
 /***/ }),
 
@@ -622,7 +622,7 @@ module.exports = "ul {\r\n    list-style-type: none;\r\n    margin: 0;\r\n    pa
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"header\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-lg-8\">\n        <h4>Cửa hàng nội thất Decor - Thiết kế nội thất - Thi công nội thất</h4>\n        <ul>\n          <li><i class=\"fa fa-location-arrow\" aria-hidden=\"true\"></i>&nbsp;Showroom: Số 6, Ngõ Liên Việt, Nguyễn Lương Bằng, Đống Đa, Hà Nội</li>\n          <li><i class=\"fa fa-phone\" aria-hidden=\"true\"></i>&nbsp;Hotline: 097.993.6223</li>\n          <li><i class=\"fa fa-envelope-o\" aria-hidden=\"true\"></i>&nbsp;Mail: Uncledecorvietnam@gmail.com</li>\n          <li><i class=\"fa fa-facebook\" aria-hidden=\"true\"></i>&nbsp;Fanpage: https://www.facebook.com/UncleDecor</li>\n        </ul>\n      </div>\n      <div class=\"col-lg-4 mt-4 mt-lg-0\">\n        <h4>Connect to us</h4>\n        <iframe src=\"https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FUncleDecor%2F&tabs&width=340&height=154&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=135721893786319\" width=\"340\" height=\"154\" style=\"border:none;overflow:hidden\" scrolling=\"no\" frameborder=\"0\" allowTransparency=\"true\" allow=\"encrypted-media\"></iframe>\n      </div>\n    </div>\n  </div>\n</div>\n<footer class=\"header\">\n    <div class=\"container\">\n      <div class=\"row\">\n      <div class=\"col-lg-10 col-sm-8\">\n          Copyright © 2018 Uncle Decor\n        </div>\n        <div class=\"col-lg-2 col-sm-4\">\n            Design by <a href=\"#\">Hot Dog</a>      \n        </div>\n      </div>\n    </div>\n</footer>"
+module.exports = "<div class=\"header\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-lg-8\">\n        <h4>Cửa hàng nội thất Decor - Thiết kế nội thất - Thi công nội thất</h4>\n        <ul>\n          <li><i class=\"fa fa-location-arrow\" aria-hidden=\"true\"></i>&nbsp;Showroom: Số 6, Ngõ Liên Việt, Nguyễn Lương Bằng, Đống Đa, Hà Nội</li>\n          <li><i class=\"fa fa-phone\" aria-hidden=\"true\"></i>&nbsp;Hotline: 097.993.6223</li>\n          <li><i class=\"fa fa-envelope-o\" aria-hidden=\"true\"></i>&nbsp;Mail: Uncledecorvietnam@gmail.com</li>\n          <li><i class=\"fa fa-facebook\" aria-hidden=\"true\"></i>&nbsp;Fanpage: https://www.facebook.com/UncleDecor</li>\n        </ul>\n      </div>\n      <div class=\"col-lg-4 mt-lg-0\">\n        <h4>Connect with us</h4>\n        <iframe src=\"https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FUncleDecor%2F&tabs&width=340&height=154&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=135721893786319\" width=\"340\" height=\"154\" style=\"border:none;overflow:hidden\" scrolling=\"no\" frameborder=\"0\" allowTransparency=\"true\" allow=\"encrypted-media\"></iframe>\n      </div>\n    </div>\n  </div>\n</div>\n<footer class=\"header\">\n    <div class=\"container\">\n      <div class=\"row\">\n      <div class=\"col-lg-10 col-sm-8\">\n          Copyright © 2018 Uncle Decor\n        </div>\n        <div class=\"col-lg-2 col-sm-4\">\n            Design by <a href=\"#\">Uncle Decor</a>      \n        </div>\n      </div>\n    </div>\n</footer>"
 
 /***/ }),
 
@@ -1217,9 +1217,9 @@ var environment = {
     domain: 'http://uncledecor.com/',
     commonImageUrl: 'http://uncledecor.com/assets/images/common/',
     productImageUrl: 'http://uncledecor.com/assets/images/upload/products/'
-    // domain: 'https://uncledecor.herokuapp.com/',
-    // commonImageUrl: 'https://uncledecor.herokuapp.com/assets/images/common/',
-    // productImageUrl: 'https://uncledecor.herokuapp.com/assets/images/upload/products/'
+    // domain: 'http://localhost:3000/',
+    // commonImageUrl: 'http://localhost:3000/assets/images/common/',
+    // productImageUrl: 'http://localhost:3000/assets/images/upload/products/'
 };
 /*
  * In development mode, to ignore zone related error stack frames such as

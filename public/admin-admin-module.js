@@ -24271,7 +24271,6 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 var ProductComponent = /** @class */ (function () {
-    // productImagesUrl = 'http://localhost:3000/images/upload/test/';
     function ProductComponent(formBuilder, catagoryService, productService, userService, fileUploadService) {
         this.formBuilder = formBuilder;
         this.catagoryService = catagoryService;
@@ -24294,7 +24293,7 @@ var ProductComponent = /** @class */ (function () {
         this.sortInput = {
             sortByDate: 'desc'
         };
-        this.productImagesUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].productImageUrl;
+        this.productImagesUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].productImageUrl + 'x30/';
     }
     ProductComponent.prototype.ngOnInit = function () {
         this.getListProduct();

@@ -111,9 +111,9 @@ exports.deleteProduct = async function(req, res, next) {
         if (!product) {
             return res.status(400).json({status: 400, message: "No product is found"});
         }
-        ProductService.removeProductImages(product.images);
         await ProductService.deleteProduct(req.params.id);
-        return res.status(200).json({status: 200, message: "The product is deleted!"});
+        res.status(200).json({status: 200, message: "The product is deleted!"});
+        return ProductService.removeProductImages(product.images);
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});
     }
@@ -130,13 +130,9 @@ exports.uploadProductImages = async function(req, res, next) {
     var images = [];
     for (let i = 0; i < files.length; i++) {
         images.push(files[i].filename);
+        FileUpload.resize(files[i].path, null, 720);
+        FileUpload.resize(files[i].path, null, 30);
 
     }
-    // for (let i = 0; i < files.length; i++) {
-    //     FileUpload.resize(files[i].path, null, 720);
-    // }
-    // for (let i = 0; i < files.length; i++) {
-    //     FileUpload.resize(files[i].path, null, 30);
-    // }
     res.status(200).json({status: 200, data: images, message: "Successfully uploaded file!"});
 }
