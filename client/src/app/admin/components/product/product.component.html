@@ -189,7 +189,7 @@
               <!-- <input type="text" name="detail" class="form-control" autocomplete="off" placeholder="" formControlName="detail"> -->
               <app-ngx-editor height="100px" minHeight="50px" [spellcheck]="true" formControlName="detail"></app-ngx-editor>
             </div>
-            <input [disabled]="!formCreateProduct.valid || !productIdValid || proccessing || filesToUpload.length == 0" type="submit" class="btn btn-primary" value="Submit">
+            <input [disabled]="!formCreateProduct.valid || !productIdValid || processing || filesToUpload.length == 0" type="submit" class="btn btn-primary" value="Submit">
           </form>
         </div>
       </div>

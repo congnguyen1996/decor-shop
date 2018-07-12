@@ -1,12 +1,9 @@
 // Accessing the Service the we just created
 
-var UserService = require('../services/users.service');
-var jwt = require('jsonwebtoken');
+const UserService = require('../services/users.service');
+const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 
-// saving the context of this module inside _the variable
-
-_this = this;
   /* ===============
   REGISTER FUNCTION
   ================= */
@@ -29,7 +26,7 @@ _this = this;
     }
 
     //Req.body contains the form submit values
-    var user = {
+    let user = {
         username: req.body.username.toLowerCase(),
         password: req.body.password,
         fullname: req.body.fullname,
@@ -38,11 +35,11 @@ _this = this;
 
     // Calling the Service function with the new object from the Request Body
     try {
-        var admin = await UserService.findUserById(req.decoded.userId);
+        const admin = await UserService.findUserById(req.decoded.userId);
         if (!admin || admin.role !== "0") {
             return res.status(400).json({status: 400, message: "You have NO this permission!"});
         }
-        var createdUser = await UserService.createUser(user);
+        const createdUser = await UserService.createUser(user);
         return res.status(201).json({status: 201, data: {createdUser: createdUser}, message:"Successfully created user!"});
     } catch (error) {
 
@@ -61,10 +58,10 @@ exports.login = async function(req, res, next) {
     if(!req.body.password) {
         return res.status(400).json({status: 400, message: "You must provide a 'password'"});
     }
-    var username = req.body.username;
-    var password = req.body.password;
+    const username = req.body.username;
+    const password = req.body.password;
     try {
-        var user = await UserService.checkLogin(req.body.username, req.body.password);
+        const user = await UserService.checkLogin(req.body.username, req.body.password);
         if(!user) {
             return res.status(200).json({status: 200, success: false, message: "Username or Email invalid"});
         }
@@ -84,9 +81,9 @@ exports.login = async function(req, res, next) {
         return res.status(400).json({status: 400, message: "Username not provided"});
     }
 
-    var username = req.params.username;
+    const username = req.params.username;
     try {
-        var user = await UserService.findUserByUsername(username);
+        const user = await UserService.findUserByUsername(username);
         if(user) {
             res.status(200).json({status: 200, success: false, message: "Username is already taken"});
         } else {
@@ -108,25 +105,14 @@ exports.checkToken = async function(req, res, next) {
     }
     // Verify the token is vaild
     try {
-        var decoded = await jwt.verify(token, config.secret);
-        // var user = await UserService.findUserById(decoded.userId);
+        const decoded = await jwt.verify(token, config.secret);
+        // let user = await UserService.findUserById(decoded.userId);
         req.decoded = decoded;
         next();
         } catch (error) {
             res.status(400).json({ status: 400, message: error.message });
         }
     }
-
-/* =================
-CHECK ADMIN FUNCTION
-================= */
-// exports.checkAdmin = function(req, res, next) {
-//     if(req.userRole !== "administrator") {
-//         return res.status(200).json({status: 200, success: false, message: "User is not Administrator"});
-//     }
-//     res.status(200).json({status: 200, success: true, message: "You is Administrator"});
-//     next();
-// }
 
 /* =================
 CHECK LOGGEDIN FUNCTION

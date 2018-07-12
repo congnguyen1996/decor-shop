@@ -16,6 +16,8 @@ export class UserComponent implements OnInit {
   formUpdateUser;
 
   listUser;
+  query;
+  sort;
   page = 1;
   pages;
   total;
@@ -42,14 +44,14 @@ export class UserComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
+    public authService: AuthService,
     private userService: UserService
   ) {}
 
   ngOnInit() {
     this.createFormCreateUser();
     this.createFormUpdateUser();
-    this.getUsers(null, this.page, this.limit, null);
+    this.getUsers();
   }
   createFormCreateUser() {
     this.formCreateUser = this.formBuilder.group({
@@ -163,8 +165,7 @@ export class UserComponent implements OnInit {
       this.usernameMessage = response.message;
     } catch (error) {
       this.usernameValid = false; // Return username as invalid
-      this.messageClass = 'alert alert-danger alert-dismissible';
-      this.message = JSON.parse(error).message;
+      this.showMessageError(error);
     }
   }
 
@@ -181,17 +182,15 @@ export class UserComponent implements OnInit {
 
     try {
       const response = await this.authService.registerUser(user);
-      this.messageClass = 'alert alert-success alert-dismissible'; // Set a success class
-      this.message = response.message; // Set a success message
-      this.getUsers(null, this.page, this.limit, null);
+      this.showMessageSuccess(response.message);
+      this.getUsers();
       this.processing = false; // Re-enable submit button
       this.usernameValid = true;
       this.usernameMessage = null;
       this.enableFormCreateUser(); // Re-enable form
       this.createFormCreateUser();
     } catch (error) {
-      this.messageClass = 'alert alert-danger alert-dismissible'; // Set an error class
-      this.message = JSON.parse(error).message; // Set an error message
+      this.showMessageError(error);
       this.processing = false; // Re-enable submit button
       this.enableFormCreateUser(); // Re-enable form
     }
@@ -207,65 +206,47 @@ export class UserComponent implements OnInit {
     if (this.selectedUser.username === user.username
     && this.selectedUser.fullname === user.fullname
     && this.selectedUser.role === user.role) {
-      this.message = 'Nothing changed';
       this.messageClass = 'alert alert-danger alert-dismissible'; // Set an error class
+      this.message = 'Nothing is changed!'; // Set an error message
       return;
     }
     this.processing = true;
     this.disableFormUpdateUser();
     try {
       const response = await this.userService.updateUser(user);
-      this.messageClass = 'alert alert-success alert-dismissible'; // Set a success class
-      this.message = response.message; // Set a success message
-      this.getUsers(null, this.page, this.limit, null);
+      this.selectedUser = response.data;
+      this.showMessageSuccess(response.message);
+      this.getUsers();
       this.processing = false; // Re-enable submit button
       this.usernameValid = true;
       this.usernameMessage = null;
-      // this.enableFormUpdateUser(); // Re-enable form
-      // this.createFormUpdateUser();
+      this.enableFormUpdateUser(); // Re-enable form
     } catch (error) {
-      this.messageClass = 'alert alert-danger alert-dismissible'; // Set an error class
-      this.message = JSON.parse(error).message; // Set an error message
+      this.showMessageError(error);
       this.processing = false; // Re-enable submit button
       this.enableFormUpdateUser(); // Re-enable form
     }
   }
 
-  async getUsers(query, page, limit, sort) {
-    let params = '?';
-    if (query) {
-      params += '&query=' + query;
-    }
-    if (page) {
-      params += '&page=' + page;
-    }
-    if (limit) {
-      params += '&limit=' + limit;
-    }
-    if (sort) {
-      params += '&sort=' + sort;
-    }
+  async getUsers() {
     try {
-      const response  = await this.userService.getUsers(params);
+      const response  = await this.userService.getUsers(this.query, this.page, this.limit, this.sort);
       this.listUser = response.data.docs;
       this.page = response.data.page;
       this.pages = response.data.pages;
       this.total = response.data.total;
     } catch (error) {
-      this.messageClass = 'alert alert-danger alert-dismissible'; // Set an error class
-      this.message = JSON.parse(error).message; // Set an error message
+      this.showMessageError(error);
     }
   }
 
   async onDeleteUser() {
     try {
       await this.userService.deleteUser(this.selectedUser._id);
-      this.messageClass = 'alert alert-success alert-dismissible'; // Set a success class
-      this.message = 'The user is deleted'; // Set a success message
-      this.getUsers(null, this.page, this.limit, null);
+      this.showMessageSuccess('The user is deleted');
+      this.getUsers();
     } catch (error) {
-      this.messageClass = 'alert alert-danger alert-dismissible'; // Set an error class
-      this.message = JSON.parse(error).message; // Set an error message
+      this.showMessageError(error);
     }
   }
 
@@ -291,5 +272,17 @@ export class UserComponent implements OnInit {
       }
     });
     return null;
+  }
+
+  // Show message success
+  showMessageSuccess(message) {
+    this.messageClass = 'alert alert-success alert-dismissible'; // Set a success class
+    this.message = message; // Set a success message
+  }
+
+  // Show message error
+  showMessageError(error) {
+    this.messageClass = 'alert alert-danger alert-dismissible'; // Set an error class
+    this.message = JSON.parse(error).message; // Set an error message
   }
 }

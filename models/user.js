@@ -5,7 +5,7 @@ const mongoose = require('mongoose'); // Node Tool for MongoDB
 mongoose.Promise = global.Promise; // Configure Mongoose Promises
 const Schema = mongoose.Schema; // Import Schema from Mongoose
 const bcrypt = require('bcrypt-nodejs'); // A native JS bcrypt library for NodeJS
-var mongoosePaginate = require('mongoose-paginate');
+const mongoosePaginate = require('mongoose-paginate');
 
 // Validate Function to check username length
 let usernameLengthChecker = (username) => {

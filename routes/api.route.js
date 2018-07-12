@@ -1,11 +1,11 @@
-var express = require('express');
+const express = require('express');
 
-var router = express.Router();
+const router = express.Router();
 
-var auth = require('./api/auth.route');
-var catagory = require('./api/catagory.route');
-var product = require('./api/product.route')
-var user = require('./api/user.route');
+const auth = require('./api/auth.route');
+const catagory = require('./api/catagory.route');
+const product = require('./api/product.route')
+const user = require('./api/user.route');
 
 router.use('/auth', auth);
 router.use('/catagory', catagory);

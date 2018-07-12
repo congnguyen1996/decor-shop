@@ -1,18 +1,14 @@
 // Accessing the Service the we just created
 
-var ProductService = require('../services/product.service');
-var FileUpload = require('../services/fileupload.service');
-
-// saving the context of this module inside _the variable
-
-_this = this;
+const ProductService = require('../services/product.service');
+const FileUpload = require('../services/fileupload.service');
 
 exports.checkProductId = async function (req, res, next) {
     if(!req.params.id) {
         return res.status(400).json({status: 400, message: "Product id not provided"});
     }
     try {
-        var product = await ProductService.findByIdOfProduct(req.params.id)
+        const product = await ProductService.findByIdOfProduct(req.params.id)
         if(product) {
             res.status(200).json({status: 200, success: false, message: "Product id is already taken"});
         } else {
@@ -29,7 +25,7 @@ exports.getProduct = async function (req, res, next) {
         return res.status(400).json({status: 400, message: "Product id not provided"});
     }
     try {
-        var product = await ProductService.findProductById(req.params.id)
+        const product = await ProductService.findProductById(req.params.id)
         return res.status(200).json({status: 200, data: product, message: "Successfully get product"});
     } catch (error) {
         res.status(400).json({status: 500, message: error.message});
@@ -59,7 +55,7 @@ exports.createProduct = async function(req, res, next) {
     if (!req.body.images) {
         return res.status(400).json({status: 400, message: "You must provide a product's images"});
     }
-    var product = {
+    let product = {
         id: req.body.id,
         name: req.body.name,
         catagoryid: req.body.catagoryid,
@@ -72,7 +68,7 @@ exports.createProduct = async function(req, res, next) {
         createby: req.decoded.userId
     }
     try {
-        var createdProduct = await ProductService.createProduct(product);
+        const createdProduct = await ProductService.createProduct(product);
         res.status(201).json({status: 201, data: createdProduct, message: "Successfully created product!"});
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});
@@ -80,7 +76,7 @@ exports.createProduct = async function(req, res, next) {
 }
 
 exports.updateProduct = async function(req, res, next) {
-    var product = {
+    let product = {
         _id: req.body._id,
         id: req.body.id ? req.body.id : null,
         name: req.body.name ? req.body.name : null,
@@ -95,7 +91,7 @@ exports.updateProduct = async function(req, res, next) {
     // handle update images
     
     try {
-        var updatedProduct = await ProductService.updateProduct(product);
+        const updatedProduct = await ProductService.updateProduct(product);
         res.status(201).json({status: 201, data: updatedProduct, message: "Successfully updated product!"});
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});
@@ -126,8 +122,8 @@ exports.uploadProductImages = async function(req, res, next) {
     if (req.files.length == 0) {
         return res.status(500).json({status: 500, message: "No file uploaded"});
     }
-    var files = Array.from(req.files);
-    var images = [];
+    let files = Array.from(req.files);
+    let images = [];
     for (let i = 0; i < files.length; i++) {
         images.push(files[i].filename);
         FileUpload.resize(files[i].path, null, 720);

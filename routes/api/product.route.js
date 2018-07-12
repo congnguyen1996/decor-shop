@@ -1,13 +1,13 @@
-var express = require('express');
-var fileUpload = require('../../services/fileupload.service');
-var multer = require('multer');
-var uploadProductImages = multer({ storage: fileUpload.storageProductImages });
+const express = require('express');
+const fileUpload = require('../../services/fileupload.service');
+const multer = require('multer');
+const uploadProductImages = multer({ storage: fileUpload.storageProductImages });
 
-var router = express.Router();
+const router = express.Router();
 
 // Getting the Controllers that we just created
-var AuthController = require('../../controllers/auth.controller');
-var ProductController = require('../../controllers/product.controller');
+const AuthController = require('../../controllers/auth.controller');
+const ProductController = require('../../controllers/product.controller');
 
 // Map each API to the Controller function
 router.get('/check-product-id/:id', ProductController.checkProductId);

@@ -1,4 +1,4 @@
-var multer = require('multer');
+const multer = require('multer');
 const sharp = require('sharp'); 
 const path = require('path');
 const fs = require('fs');
@@ -13,8 +13,8 @@ exports.storageProductImages = multer.diskStorage({
     cb(null, pathFile)
   },
   filename: function (req, file, cb) {
-    var originalname = file.originalname;
-    var extension = originalname.split(".");
+    let originalname = file.originalname;
+    let extension = originalname.split(".");
     newFileName = 'product_' + Date.now() + '.' + extension[extension.length-1];;
     cb(null, newFileName);
   }
@@ -22,8 +22,8 @@ exports.storageProductImages = multer.diskStorage({
 
 // function to filter file of image png/jpg...
 exports.fileFilterImage = function (req, file, cb){
-  var type = file.mimetype; 
-  var typeArray = type.split("/");
+  let type = file.mimetype; 
+  let typeArray = type.split("/");
   if (typeArray[0] == "image") {
     cb(null, true);
   }else {

@@ -36,7 +36,20 @@ export class UserService {
   }
 
   // Function to register
-  getUsers(params) {
+  getUsers(query, page, limit, sort) {
+    let params = '?';
+    if (query) {
+      params += '&query=' + query;
+    }
+    if (page) {
+      params += '&page=' + page;
+    }
+    if (limit) {
+      params += '&limit=' + limit;
+    }
+    if (sort) {
+      params += '&sort=' + sort;
+    }
     return this.utilService
     .getHttpPromise(this.http.get(this.domain + 'api/user/get' + params, this.options)
     .pipe(map(res => res.json())));

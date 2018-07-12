@@ -76,7 +76,7 @@
             <div class="form-group">
               <label for="name">CatagoryName</label>
               <div [ngClass]="{'has-error': (formCreateCatagory.controls.name.errors && formCreateCatagory.controls.name.dirty) || (!catagoryNameValid && formCreateCatagory.controls.name.value), 'has-success': !formCreateCatagory.controls.name.errors && catagoryNameValid}">
-                <input [ngClass]="{'state-valid': !formCreateCatagory.controls.name.errors && nameValid}" type="text" name="name" class="form-control" autocomplete="off" placeholder="*name" formControlName="name"
+                <input [ngClass]="{'state-valid': !formCreateCatagory.controls.name.errors && catagoryNameValid}" type="text" name="name" class="form-control" autocomplete="off" placeholder="*name" formControlName="name"
                   (keyup)="checkCatagoryName('create')">
                   <ul class="help-block">
                     <li *ngIf="formCreateCatagory.controls.name.errors?.required && formCreateCatagory.controls.name.dirty">This field is required</li>
@@ -85,7 +85,7 @@
                   </ul>
               </div>
             </div>
-            <input  [disabled]="!formCreateCatagory.valid || !catagoryNameValid || proccessing" type="submit" class="btn btn-primary" value="Submit">
+            <input  [disabled]="!formCreateCatagory.valid || !catagoryNameValid || processing" type="submit" class="btn btn-primary" value="Submit">
           </form>
         </div>
       </div>
@@ -109,7 +109,7 @@
             <div class="form-group">
               <label for="name">CatagoryName</label>
               <div [ngClass]="{'has-error': (formUpdateCatagory.controls.name.errors && formUpdateCatagory.controls.name.dirty) || (!catagoryNameValid && formUpdateCatagory.controls.name.value), 'has-success': !formUpdateCatagory.controls.name.errors && catagoryNameValid}">
-                <input [ngClass]="{'state-valid': !formUpdateCatagory.controls.name.errors && nameValid}" type="text" name="name" class="form-control" autocomplete="off" placeholder="*name" formControlName="name"
+                <input [ngClass]="{'state-valid': !formUpdateCatagory.controls.name.errors && catagoryNameValid}" type="text" name="name" class="form-control" autocomplete="off" placeholder="*name" formControlName="name"
                   (keyup)="checkCatagoryName('update')">
                   <ul class="help-block">
                     <li *ngIf="formUpdateCatagory.controls.name.errors?.required && formUpdateCatagory.controls.name.dirty">This field is required</li>
@@ -118,7 +118,7 @@
                   </ul>
               </div>
             </div>
-            <input  [disabled]="!formUpdateCatagory.valid || !catagoryNameValid || proccessing" type="submit" class="btn btn-primary" value="Submit">
+            <input [disabled]="!formUpdateCatagory.valid || !catagoryNameValid || processing" type="submit" class="btn btn-primary" value="Submit">
           </form>
         </div>
       </div>

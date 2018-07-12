@@ -82,8 +82,7 @@ export class LoginComponent implements OnInit {
         this.processing = false; // Enable submit button
         this.enableFormLogin(); // Enable form for editting
       } else {
-        this.messageClass = 'alert alert-success alert-dismissible'; // Set bootstrap success class
-        this.message = response.message; // Set success message
+        this.showMessageSuccess(response.message);
         // Function to store user's token in client local storage
         this.authService.storeUserData(response.data.token, response.data.user);
         // After 1 seconds, redirect to dashboard page
@@ -97,12 +96,24 @@ export class LoginComponent implements OnInit {
         }, 1000);
       }
     } catch (error) {
-      this.messageClass = 'alert alert-danger alert-dismissible'; // Set bootstrap error class
-      this.message = JSON.parse(error).message; // Set error message
+      this.showMessageError(error);
       this.processing = false; // Enable submit button
       this.enableFormLogin(); // Enable form for editting
     }
   }
+
+  // Show message success
+  showMessageSuccess(message) {
+    this.messageClass = 'alert alert-success alert-dismissible'; // Set a success class
+    this.message = message; // Set a success message
+  }
+
+  // Show message error
+  showMessageError(error) {
+    this.messageClass = 'alert alert-danger alert-dismissible'; // Set an error class
+    this.message = JSON.parse(error).message; // Set an error message
+  }
+
   removeMessage() {
     this.message = null;
     this.messageClass = '';

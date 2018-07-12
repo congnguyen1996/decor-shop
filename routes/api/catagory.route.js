@@ -1,10 +1,10 @@
-var express = require('express');
+const express = require('express');
 
-var router = express.Router();
+const router = express.Router();
 
 // Getting the Controllers that we just created
-var AuthController = require('../../controllers/auth.controller');
-var CatagoryController = require('../../controllers/catagory.controller');
+const AuthController = require('../../controllers/auth.controller');
+const CatagoryController = require('../../controllers/catagory.controller');
 
 // Map each API to the Controller function
 // router.use(AuthController.CheckToken);

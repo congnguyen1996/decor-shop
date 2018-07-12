@@ -1,20 +1,16 @@
 // Accessing the Service the we just created
 
-var CatagoryService = require('../services/catagory.service');
-var ProductService = require('../services/product.service');
-
-// saving the context of this module inside _the variable
-
-_this = this;
+const CatagoryService = require('../services/catagory.service');
+const ProductService = require('../services/product.service');
 
 exports.checkCatagoryName = async function (req, res, next) {
     if(!req.params.name) {
         return res.status(400).json({status: 400, message: "Catagory name not provided"});
     }
 
-    var catagoryName = req.params.name;
+    const catagoryName = req.params.name;
     try {
-        var catagory = await CatagoryService.findUserByName(catagoryName);
+        const catagory = await CatagoryService.findUserByName(catagoryName);
         if(catagory) {
             res.status(200).json({status: 200, success: false, message: "Catagory name is already taken"});
         } else {
@@ -42,12 +38,12 @@ exports.createCatagory = async function(req, res, next) {
     if (!req.body.parentid) {
         return res.status(400).json({status: 400, message: "You must provide a parent id of catagory"});
     }
-    var catagory = {
+    let catagory = {
         name: req.body.name,
         parentid: req.body.parentid
     }
     try {
-        var createdCatagory = await CatagoryService.createCatagory(catagory);
+        const createdCatagory = await CatagoryService.createCatagory(catagory);
         res.status(201).json({status: 201, data: createdCatagory, message: "Successfully created catagory!"});
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});
@@ -58,13 +54,13 @@ exports.updateCatagory = async function(req, res, next) {
     if (!req.body.name && !req.body.parentid) {
         return res.status(400).json({status: 400, message: "No field is provided"});
     }
-    var catagory = {
+    let catagory = {
         _id: req.body._id,
         name: req.body.name ? req.body.name : null,
         parentid: req.body.parentid ? req.body.parentid : null
     }
     try {
-        var updatedCatagory = await CatagoryService.updateCatagory(catagory);
+        const updatedCatagory = await CatagoryService.updateCatagory(catagory);
         res.status(201).json({status: 201, data: updatedCatagory, message: "Successfully updated catagory!"});
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});
@@ -76,10 +72,10 @@ exports.deleteCatagory = async function(req, res, next) {
         return res.status(400).json({status: 400, message: "Catagory id must be present"});
     }
     try {
-        var query = '{"catagoryid": "' + req.params.id + '"}';
+        let query = '{"catagoryid": "' + req.params.id + '"}';
         const result = await ProductService.getProducts(query);
         if (result.total > 0) {
-            var listProduct = result.docs;
+            let listProduct = result.docs;
             for (let i = 0; i < listProduct.length; i++) {
                 await ProductService.deleteProduct(listProduct[i]._id);
             }

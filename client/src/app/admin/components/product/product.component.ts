@@ -184,7 +184,7 @@ export class ProductComponent implements OnInit {
   // Function to get list user
   async getListUser() {
     try {
-      const response  = await this.userService.getUsers('');
+      const response  = await this.userService.getUsers(null, null, null, null);
       this.listUser = response.data.docs;
       this.getListUserObj();
     } catch (error) {

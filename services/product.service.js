@@ -1,17 +1,17 @@
 // Getting the Newly created Mongoose Model we just created
-var Product = require('../models/product');
-var fs = require('fs');
-var path = require('path');
+const Product = require('../models/product');
+const fs = require('fs');
+const path = require('path');
 const pathConfig = require('../config/path');
 
-// Saving the context of this module inside _the variable
+// Saving the context of this module inside _the letiable
 _this = this;
 
 // Async function to find the Product by Id
 
 exports.findProductById = async function(id, fields) {
     try {
-        var product = await Product.findOne({_id: id}).select(fields);
+        let product = await Product.findOne({_id: id}).select(fields);
         return product;
     } catch (error) {
         throw Error('Error occured while finding Product by Id: ' + error);
@@ -20,7 +20,7 @@ exports.findProductById = async function(id, fields) {
 
 exports.findByIdOfProduct = async function(id, fields) {
     try {
-        var product = await Product.findOne({id: id}).select(fields);
+        let product = await Product.findOne({id: id}).select(fields);
         return product;
     } catch (error) {
         throw Error('Error occured while finding Product by Id: ' + error);
@@ -28,21 +28,21 @@ exports.findByIdOfProduct = async function(id, fields) {
 }
 
 // Async function to get the Product List
-exports.getProducts = async function(query, key, page, limit, sort) {
+exports.getProducts = async function(qr, key, page, limit, sort) {
     // Options setup for the mongoose paginate
-    var query = query ? JSON.parse(query) : {};
+    let query = qr ? JSON.parse(qr) : {};
     if (key) {
-        var regExp = new RegExp(`${key}`, "i");
+        let regExp = new RegExp(`${key}`, "i");
         query.$or = [ {id: regExp}, {name: regExp} ];
     }
-    var options = {
+    let options = {
         page: page ? parseInt(page) : 1,
         limit: limit ? parseInt(limit) : 1000,
         sort: sort ? JSON.parse(sort) : {catagoryid: 'asc', createat: 'asc'}
     }
     // Try Catch the awaited promise to handle the error
     try {
-        var products = await Product.paginate(query, options);
+        let products = await Product.paginate(query, options);
         // Return the user list that was returned by the mongoose promise
         return products; 
     } catch (error) {
@@ -54,7 +54,7 @@ exports.getProducts = async function(query, key, page, limit, sort) {
 
 exports.createProduct = async function(product) {
     // Creating  a new Mongoose Object by using the new key word
-    var newProduct = new Product({
+    let newProduct = new Product({
         id: product.id,
         name: product.name,
         catagoryid: product.catagoryid,
@@ -64,8 +64,8 @@ exports.createProduct = async function(product) {
         createby: product.createby
     });
     try {
-        var saveProduct = await newProduct.save();
-        return saveProduct;
+        const savedProduct = await newProduct.save();
+        return savedProduct;
     } catch (error) {     
         // return a Error message describing the reson
         throw Error('Error while creating Product: ' + error);
@@ -73,30 +73,8 @@ exports.createProduct = async function(product) {
 }
 
 exports.updateProduct = async function(product) {
-    var id = product.id;
     try {
-        // Find the old Product Object by ID
-        var oldProduct = await Product.findOne({id: id});
-        // update the old Product
-        if (product.id) {
-            oldProduct.id = id;
-        }
-        if (product.name) {
-            oldProduct.name = product.name;
-        }
-        if (product.catagoryid) {
-            oldProduct.catagoryid = product.catagoryid;
-        }
-        if (product.price) {
-            oldProduct.price = product.price;
-        }
-        if (product.images) {
-            oldProduct.images = product.images;
-        }
-        if (product.detail) {
-            oldProduct.detail = product.detail;
-        }
-        var savedProduct = await oldProduct.update();
+        const savedProduct = await Product.findByIdAndUpdate(product._id, product);
         return savedProduct;
     } catch (error) {
         throw Error('Error occured while updating the Product: ' + error);
@@ -106,7 +84,7 @@ exports.updateProduct = async function(product) {
 exports.deleteProduct = async function(id) {
     // Delete the Product
     try {
-        var deleted = await Product.remove({_id: id});
+        const deleted = await Product.remove({_id: id});
         if(deleted.n === 0) {
             throw Error('Product could not be deleted');
         }

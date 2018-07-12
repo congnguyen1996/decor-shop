@@ -4,14 +4,9 @@
 
 export const environment = {
   production: false,
-  domain: 'http://uncledecor.com/',
-  commonImageUrl: 'http://uncledecor.com/assets/images/common/',
-  productImageUrl: 'http://uncledecor.com/assets/images/upload/products/'
-
-  // domain: 'http://localhost:3000/',
-  // commonImageUrl: 'http://localhost:3000/assets/images/common/',
-  // productImageUrl: 'http://localhost:3000/assets/images/upload/products/'
-
+  domain: 'http://localhost:3000/',
+  commonImageUrl: 'http://localhost:3000/assets/images/common/',
+  productImageUrl: 'http://localhost:3000/assets/images/upload/products/'
 };
 
 /*

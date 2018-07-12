@@ -1,22 +1,22 @@
-const env = require('./env');
+require('./env');
 const database_config = require('./config/database');
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
-var api = require('./routes/api.route');
+const api = require('./routes/api.route');
 
-var bluebird = require('bluebird');
-var mongoose = require('mongoose');
+const bluebird = require('bluebird');
+const mongoose = require('mongoose');
 mongoose.Promise = bluebird
 mongoose.connect(database_config.uri)
 .then(()=> { console.log('Succesfully Connected to the Mongodb Database ' + database_config.db)})
 .catch(()=> { console.log('Error Connecting to the Mongodb Database ' + database_config.db)});
 
-var app = express();
+const app = express();
 
 // cors
 app.use(function(req, res, next) {

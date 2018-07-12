@@ -1,11 +1,5 @@
 // Accessing the Service the we just created
-
-var UserService = require('../services/users.service');
-
-// saving the context of this module inside _the variable
-
-_this = this;
-
+const UserService = require('../services/users.service');
 
 exports.getUsers = async function(req, res, next) {
     try {
@@ -18,18 +12,19 @@ exports.getUsers = async function(req, res, next) {
 
 
 exports.updateUser = async function(req, res, next) {
-    var user = {
+    let user = {
         _id: req.body._id,
+        username: req.body.username ? req.body.username : null,
         fullname: req.body.fullname ? req.body.fullname : null,
         role: req.body.role ? req.body.role : null
     }
     try {
-        var oldUser =  await UserService.findUserById(req.body._id);
-        var admin = await UserService.findUserById(req.decoded.userId);
+        let oldUser =  await UserService.findUserById(req.body._id);
+        let admin = await UserService.findUserById(req.decoded.userId);
         if (!admin || admin.role !== "0" || !oldUser || oldUser.role === "0") {
             return res.status(400).json({status: 400, message: "You have NO this permission!"});
         }
-        var updatedUser = await UserService.updateUser(user);
+        let updatedUser = await UserService.updateUser(user);
         res.status(201).json({status: 201, data: updatedUser, message: "Successfully updated user!"});
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});
@@ -47,7 +42,7 @@ exports.updatePassword = async function(req, res, next) {
         return res.status(400).json({status: 400, message: "New password is the same old password"});
     }
     try {
-        var updatedUser = await UserService.updatePassword(req.decoded.userId, req.body.oldpw, req.body.newpw);
+        const updatedUser = await UserService.updatePassword(req.decoded.userId, req.body.oldpw, req.body.newpw);
         res.status(201).json({status: 201, data: updatedUser, message: "Successfully changed user's password!"});
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});
@@ -59,8 +54,8 @@ exports.deleteUser = async function(req, res, next) {
         return res.status(400).json({status: 400, message: "User id must be present"});
     }
     try {
-        var oldUser =  await UserService.findUserById(req.params.id);
-        var admin = await UserService.findUserById(req.decoded.userId);
+        const oldUser =  await UserService.findUserById(req.params.id);
+        const admin = await UserService.findUserById(req.decoded.userId);
         if (!admin || admin.role !== "0" || oldUser.role === "0") {
             return res.status(400).json({status: 400, message: "You have NO this permission!"});
         }
