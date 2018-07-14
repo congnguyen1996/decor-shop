@@ -11636,7 +11636,7 @@ a.icon:hover {
   margin-bottom: -1px;
   transition: .3s border-color;
   font-weight: 400;
-  padding: 1rem 0;
+  padding: 0.4rem 0;
 }
 
 .nav-tabs .nav-link:hover:not(.disabled) {

@@ -56,7 +56,7 @@
                   <tbody>
                     <tr *ngFor="let product of listProduct; index as i">
                         <th class="text-center" scope="row">{{ limit*(page-1) + i + 1 }}</th>
-                        <td class="text-center"><img class="img-rounded" height="30" width="40" src="{{productImagesUrl}}{{product.images[0]}}" alt=""></td>
+                        <td class="text-center"><img *ngIf="product.images" class="img-rounded" height="30" width="40" src="{{productImagesUrl}}{{product.images[0]}}" alt=""></td>
                         <td class="text-center">{{ product.id }}</td>
                         <td class="text-center">{{ product.name }}</td>
                         <td class="text-center">{{ listCatagoryObj[product.catagoryid]?.name  }}</td>
@@ -102,7 +102,7 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">Create new product</h4>
-          <button type="button" class="close" data-dismiss="modal"></button>
+          <button type="button" class="close" data-dismiss="modal" (click)="refreshFormProduct()"></button>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
@@ -181,7 +181,9 @@
             </div>
             <div class="form-group">
               <div class="row">
-                <img class="rounded ml-3 mt-2" *ngFor="let image of previewProductImages"  src="{{image}}" width="120" height="90" alt="">
+                <div *ngFor="let image of previewFileUpload" class="ml-3 mt-2">
+                  <img class="rounded" src="{{image}}" width="120" height="90" alt="">
+                </div>
               </div>
             </div>  
             <div class="form-group">
@@ -204,28 +206,100 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">Update Product</h4>
-          <button type="button" class="close" data-dismiss="modal"></button>
+          <button type="button" class="close" data-dismiss="modal" (click)="refreshFormProduct()"></button>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
-          <p>Chức năng này sẽ được cập nhật sau.</p>
-          <div>Thực hiện delete -> create :v</div>
-          <!-- form update product -->
-          <!-- <form [formGroup]="formUpdateCatagory" (submit)="onSumbitUpdateCatagory()">
+          <!-- form create product -->
+          <form [formGroup]="formUpdateProduct" (submit)="onSumbitUpdateProduct()">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="form-label">ID</label>
+                    <div [ngClass]="{'has-error': (formUpdateProduct.controls.id.errors && formUpdateProduct.controls.id.dirty) || (!productIdValid && formUpdateProduct.controls.id.dirty), 'has-success': !formUpdateProduct.controls.name.errors && productIdValid}">
+                      <input [ngClass]="{'state-valid': !formUpdateProduct.controls.id.errors && productIdValid}" type="text" name="id" class="form-control" autocomplete="off" placeholder="" formControlName="id"
+                        (keyup)="checkProductId('update')">
+                        <ul class="help-block">
+                          <li *ngIf="formUpdateProduct.controls.id.errors?.required && formUpdateProduct.controls.id.dirty">This field is required</li>
+                          <li *ngIf="formUpdateProduct.controls.id.errors?.minlength && formUpdateProduct.controls.id.value || formUpdateProduct.controls.id.errors?.maxlength && formUpdateProduct.controls.id.value ">Product's Id must be at least 2 characters but no more than 30</li>
+                          <li *ngIf="productIdMessage && formUpdateProduct.controls.id.valid">{{ productIdMessage }}</li>
+                        </ul>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-label">Catagory</label>
+                  <div>
+                    <select formControlName="catagoryid" class="form-control custom-select" name="catagogyid">
+                      <option *ngFor="let catagory of listCatagory" [value]="catagory._id">{{ catagory.name }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="form-group">
-              <label for="name">CatagoryName</label>
-              <div [ngClass]="{'has-error': (formUpdateCatagory.controls.name.errors && formUpdateCatagory.controls.name.dirty) || (!catagoryNameValid && formUpdateCatagory.controls.name.value), 'has-success': !formUpdateCatagory.controls.name.errors && catagoryNameValid}">
-                <input [ngClass]="{'state-valid': !formUpdateCatagory.controls.name.errors && nameValid}" type="text" name="name" class="form-control" autocomplete="off" placeholder="*name" formControlName="name"
-                  (keyup)="checkCatagoryName('update')">
+              <label class="form-label">Product Name</label>
+              <div [ngClass]="{'has-error': (formUpdateProduct.controls.name.errors && formUpdateProduct.controls.name.dirty), 'has-success': !formUpdateProduct.controls.name.errors}">
+                <input [ngClass]="{'state-valid': !formUpdateProduct.controls.name.errors}" type="text" name="name" class="form-control" autocomplete="off" placeholder="" formControlName="name">
                   <ul class="help-block">
-                    <li *ngIf="formUpdateCatagory.controls.name.errors?.required && formUpdateCatagory.controls.name.dirty">This field is required</li>
-                    <li *ngIf="formUpdateCatagory.controls.name.errors?.minlength && formUpdateCatagory.controls.name.value || formUpdateCatagory.controls.name.errors?.maxlength && formUpdateCatagory.controls.name.value ">Catagory's name must be at least 2 characters but no more than 30</li>
-                    <li *ngIf="catagoryNameMessage && formUpdateCatagory.controls.name.valid">{{ catagoryNameMessage }}</li>
+                    <li *ngIf="formUpdateProduct.controls.name.errors?.required && formUpdateProduct.controls.name.dirty">This field is required</li>
+                    <li *ngIf="formUpdateProduct.controls.name.errors?.minlength && formUpdateProduct.controls.name.value || formUpdateProduct.controls.name.errors?.maxlength && formUpdateProduct.controls.name.value ">Product's name must be at least 3 characters but no more than 100</li>
                   </ul>
               </div>
             </div>
-            <input  [disabled]="!formUpdateCatagory.valid || !catagoryNameValid || proccessing" type="submit" class="btn btn-primary" value="Submit">
-          </form> -->
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-label">Unit</label>
+                  <div class="selectgroup selectgroup-pills">
+                    <label class="selectgroup-item">
+                      <input formControlName="priceunit" type="radio" name="priceunit" value="DOLLAR" class="selectgroup-input" checked="">
+                      <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-usd" aria-hidden="true"></i>DOLLAR</span>
+                    </label>
+                    <label class="selectgroup-item">
+                      <input formControlName="priceunit" type="radio" name="priceunit" value="VND" class="selectgroup-input">
+                      <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-star" aria-hidden="true"></i>VND</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="form-label">Price</label>
+                  <div [ngClass]="{'has-error': (formUpdateProduct.controls.pricevalue.errors && formUpdateProduct.controls.pricevalue.dirty), 'has-success': !formUpdateProduct.controls.pricevalue.errors}">
+                      <input [ngClass]="{'state-valid': !formUpdateProduct.controls.pricevalue.errors}" type="text" name="price-value" class="form-control" autocomplete="off" placeholder="" formControlName="pricevalue">
+                      <ul class="help-block">
+                        <li *ngIf="formUpdateProduct.controls.pricevalue.errors?.required && formUpdateProduct.controls.pricevalue.dirty">This field is required</li>
+                      </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Images (4:3 standard)</div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" name="example-file-input-custom" multiple accept="image/png, image/jpeg" (change)="onFileSelected($event)">
+                <label class="custom-file-label">Add more</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div *ngFor="let image of selectedProduct?.images; index as i" class="preview-image ml-3 mt-2">
+                  <button type="button" class="close" data-toggle="tooltip" title="Remove" (click)="removeFileImage(i)"></button>
+                  <img class="rounded" src="{{previewImageUrl}}{{image}}" width="120" height="90" alt="">
+                </div>
+                <div *ngFor="let image of previewFileUpload" class="ml-3 mt-2">
+                  <img class="rounded" src="{{image}}" width="120" height="90" alt="">
+                </div>
+              </div>
+            </div>  
+            <div class="form-group">
+              <div class="form-label">Detail</div>
+              <app-ngx-editor height="100px" minHeight="50px" [spellcheck]="true" formControlName="detail"></app-ngx-editor>
+            </div>
+            <input [disabled]="!formUpdateProduct.valid || !productIdValid || processing || (filesToUpload.length == 0 && selectedProduct?.images.length == 0)" type="submit" class="btn btn-primary" value="Submit">
+          </form>
         </div>
       </div>
     </div>

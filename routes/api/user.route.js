@@ -4,7 +4,7 @@ const router = express.Router();
 
 // Getting the Controllers that we just created
 const UserController = require('../../controllers/user.controller');
-const AuthController = require('../../controllers/auth.controller');
+const  AuthController = require('../../controllers/auth.controller');
 
 // Map each API to the Controller function
 router.get('/get', UserController.getUsers);

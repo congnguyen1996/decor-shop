@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   isSubmitLogin = false;
 
   previousUrl;
+  invalidCounter = 5;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,6 +65,12 @@ export class LoginComponent implements OnInit {
   }
 
   async onSubmitLogin() {
+    if (this.invalidCounter <= 0) {
+      this.messageClass = 'alert alert-danger alert-dismissible';
+      this.message = 'You have been wrong too many times, try later!';
+      // block this account
+      return;
+    }
     if (this.formLogin.invalid) {
       this.isSubmitLogin = true;
       return;
@@ -80,7 +87,9 @@ export class LoginComponent implements OnInit {
         this.messageClass = 'alert alert-danger alert-dismissible'; // Set bootstrap error class
         this.message = response.message; // Set error message
         this.processing = false; // Enable submit button
-        this.enableFormLogin(); // Enable form for editting
+        this.enableFormLogin(); // Enable form for
+        this.formLogin.controls['password'].setValue('');
+        this.invalidCounter--;
       } else {
         this.showMessageSuccess(response.message);
         // Function to store user's token in client local storage

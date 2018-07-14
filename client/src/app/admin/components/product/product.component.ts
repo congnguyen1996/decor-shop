@@ -39,7 +39,7 @@ export class ProductComponent implements OnInit {
   listUserObj = {};
 
   filesToUpload: Array<File> = [];
-  previewProductImages = [];
+  previewFileUpload = [];
 
   filterInput = {
     filterByCatagory: 'all'
@@ -49,6 +49,7 @@ export class ProductComponent implements OnInit {
   };
   searchInput;
   productImagesUrl = environment.productImageUrl + 'x30/';
+  previewImageUrl = environment.productImageUrl + 'x720/';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,7 +65,27 @@ export class ProductComponent implements OnInit {
     this.getListCatagory();
     this.getListUser();
     this.createFormCreateProduct();
-    this.createFormUpdateProduct();
+    this.createFormUpdateProduct(null, null, null, 'DOLLAR', null, null);
+  }
+
+  // Function to create form update product
+  createFormUpdateProduct(id: String, name: String, catagoryid: String, priceunit: String, pricevalue: String, detail: String): void {
+    this.formUpdateProduct = this.formBuilder.group({
+      id: [id, Validators.compose([
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(30)
+      ])],
+      name: [name, Validators.compose([
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(100)
+      ])],
+      catagoryid: [catagoryid, Validators.required],
+      priceunit: [priceunit, Validators.required],
+      pricevalue: [pricevalue, Validators.required],
+      detail: [detail, Validators.required]
+    });
   }
 
   // Function to create form add a new product
@@ -87,17 +108,6 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  // Function to create form update product
-  createFormUpdateProduct() {
-    this.formUpdateProduct = this.formBuilder.group({
-      id: ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(30)
-      ])]
-    });
-  }
-
   // Function to disable the registration form
   disableFormCreateProduct() {
     this.formCreateProduct.controls['id'].disable();
@@ -117,6 +127,25 @@ export class ProductComponent implements OnInit {
     this.formCreateProduct.controls['detail'].enable();
   }
 
+  // Function to disable the registration form
+  disableFormUpdateProduct() {
+    this.formUpdateProduct.controls['id'].disable();
+    this.formUpdateProduct.controls['name'].disable();
+    this.formUpdateProduct.controls['catagoryid'].disable();
+    this.formUpdateProduct.controls['priceunit'].disable();
+    this.formUpdateProduct.controls['pricevalue'].disable();
+    this.formUpdateProduct.controls['detail'].disable();
+  }
+  // Function to enable the registration form
+  enableFormUpdateProduct() {
+    this.formUpdateProduct.controls['id'].enable();
+    this.formUpdateProduct.controls['name'].enable();
+    this.formUpdateProduct.controls['catagoryid'].enable();
+    this.formUpdateProduct.controls['priceunit'].enable();
+    this.formUpdateProduct.controls['pricevalue'].enable();
+    this.formUpdateProduct.controls['detail'].enable();
+  }
+
   // Function to check product's id when create a new or update product
   async checkProductId(action) {
     if ((this.formUpdateProduct.controls.id.invalid && action === 'update')
@@ -126,6 +155,9 @@ export class ProductComponent implements OnInit {
     let id = null;
     if (action === 'update') {
       id = this.formUpdateProduct.get('id').value;
+      if (this.selectedProduct.id === id) {
+        return true;
+      }
     } else if (action === 'create') {
       id = this.formCreateProduct.get('id').value;
     }
@@ -160,11 +192,13 @@ export class ProductComponent implements OnInit {
       const response = await this.productService.createProduct(product);
       // refresh data of page and show message dialog
       this.getListProduct();
-      this.refreshFormCreateProduct();
+      this.enableFormCreateProduct(); // Re-enable form
+      this.refreshFormProduct();
       this.showMessageSuccess(response.message);
+      this.refreshValid();
     } catch (error) {
       this.showMessageError(error);
-      this.refreshFormCreateProduct();
+      this.refreshFormProduct();
     }
   }
 
@@ -216,27 +250,45 @@ export class ProductComponent implements OnInit {
 
   // Funtion to submit data when update a product
   async onSumbitUpdateProduct() {
-    const Product = {
+    this.processing = true;
+    this.disableFormUpdateProduct();
+
+    const product = {
       _id: this.selectedProduct._id,
-      id: this.formUpdateProduct.get('id').value
-      //  parentid: when upgrade
+      id: this.formUpdateProduct.get('id').value,
+      name: this.formUpdateProduct.get('name').value,
+      catagoryid: this.formUpdateProduct.get('catagoryid').value,
+      priceunit: this.formUpdateProduct.get('priceunit').value,
+      pricevalue: this.formUpdateProduct.get('pricevalue').value,
+      detail: this.formUpdateProduct.get('detail').value,
+      images: this.selectedProduct.images
     };
     try {
-      const response = await this.productService.updateProduct(Product);
+      if (this.filesToUpload.length > 0) {
+        const responseImages = await this.fileUploadService.uploadProductImages(this.filesToUpload);
+        product.images = [...product.images, ...responseImages.data];
+      }
+      const response = await this.productService.updateProduct(product);
       this.showMessageSuccess(response.message);
       this.getListProduct();
-      this.createFormUpdateProduct();
+      this.refreshFormProduct();
       this.refreshValid();
     } catch (error) {
       this.showMessageError(error);
+      this.refreshFormProduct();
     }
   }
 
   // Function to select a product when click a action button
   selectProduct(product, action: String) {
-    this.selectedProduct = product;
+    this.selectedProduct = JSON.parse(JSON.stringify(product));
     if (action === 'edit') {
-      this.formUpdateProduct.controls['id'].setValue(product.id);
+      this.enableFormUpdateProduct();
+      this.createFormUpdateProduct(this.selectedProduct.id,
+        this.selectedProduct.name, this.selectedProduct.catagoryid,
+        this.selectedProduct.price.unit, this.selectedProduct.price.value,
+        this.selectedProduct.detail);
+      this.productIdValid = true;
     }
   }
 
@@ -262,17 +314,16 @@ export class ProductComponent implements OnInit {
     this.productIdMessage = null;
   }
 
-  refreshFormCreateProduct() {
-    this.enableFormCreateProduct(); // Re-enable form
-    this.createFormCreateProduct();
+  refreshFormProduct() {
     this.filesToUpload = [];
-    this.previewProductImages = [];
+    this.previewFileUpload = [];
+    this.selectedProduct = null;
     this.processing = false; // Re-enable submit button
   }
 
   onFileSelected(event) {
     this.filesToUpload  = <Array<File>>event.target.files;
-    this.previewProductImages = [];
+    this.previewFileUpload = [];
     for (let i = 0; i < this.filesToUpload.length; i++) {
       this.setupReader(this.filesToUpload[i]);
     }
@@ -281,7 +332,7 @@ export class ProductComponent implements OnInit {
   setupReader(file: File) {
     const reader = new FileReader();
     reader.onload = (e: any) => {
-      this.previewProductImages.push(e.target.result);
+      this.previewFileUpload.push(e.target.result);
     };
     reader.readAsDataURL(file);
   }
@@ -321,5 +372,9 @@ export class ProductComponent implements OnInit {
       this.page = 1;
       this.getListProduct();
     }
+  }
+
+  removeFileImage(index) {
+    this.selectedProduct.images.splice(index, 1);
   }
 }

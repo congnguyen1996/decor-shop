@@ -1,12 +1,29 @@
 @media (min-width: 768px) {
-    .modal-dialog {
-      max-width: 687px;
-      margin: 1.75rem auto;
-    }
-    .modal-dialog-centered {
-      min-height: calc(100% - (1.75rem * 2));
-    }
-    .modal-sm {
-      max-width: 300px;
-    }
+  .modal-dialog {
+    max-width: 687px;
+    margin: 1.75rem auto;
   }
+  .modal-dialog-centered {
+    min-height: calc(100% - (1.75rem * 2));
+  }
+  .modal-sm {
+    max-width: 300px;
+  }
+}
+
+.preview-image {
+  position: relative;
+  border-radius: 3px;
+}
+
+.preview-image:hover .close {
+  display: block;
+}
+
+.preview-image .close {
+  position: absolute;
+  display: none;
+  top: -0.5rem;
+  right: 0;
+  font-size: 1.5rem;
+}

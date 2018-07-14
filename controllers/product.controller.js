@@ -78,21 +78,30 @@ exports.createProduct = async function(req, res, next) {
 exports.updateProduct = async function(req, res, next) {
     let product = {
         _id: req.body._id,
-        id: req.body.id ? req.body.id : null,
-        name: req.body.name ? req.body.name : null,
-        catagoryid: req.body.catagoryid ? req.body.catagoryid : null,
+        id: req.body.id,
+        name: req.body.name,
+        catagoryid: req.body.catagoryid,
         price: {
-            unit: req.body.unit ? req.body.unit : null,
-            value: req.body.value ? req.body.value : null,
+            unit: req.body.priceunit,
+            value: req.body.pricevalue,
         },
-        images: null,
-        detail: req.body.detail ? req.body.detail : null
+        images: req.body.images,
+        detail: req.body.detail
     }
-    // handle update images
     
     try {
+        let delImages = [];
+        const oldProduct = await ProductService.findProductById(product._id);
+        for (let i = 0; i < oldProduct.images.length; i++) {
+            if (!product.images.includes(oldProduct.images[i])) {
+                delImages.push(oldProduct.images[i]); 
+            }
+        }
         const updatedProduct = await ProductService.updateProduct(product);
         res.status(201).json({status: 201, data: updatedProduct, message: "Successfully updated product!"});
+        if (delImages.length > 0) {
+            ProductService.removeProductImages(delImages);
+        }
     } catch (error) {
         res.status(500).json({status: 500, message: error.message});
     }
