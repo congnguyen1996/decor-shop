@@ -2,7 +2,7 @@
   <div class="container">
     <div class="d-flex">
       <!-- image logo -->
-      <a class="header-brand mr-9" href="./index.html">
+      <a class="header-brand mr-9" href="#">
         <img src="{{commonImageUrl}}uncle-decor-logo.png" alt="decor logo">
       </a>
       <div class="d-flex order-lg-2 ml-9">
@@ -21,8 +21,8 @@
                         <a routerLink="products/{{catagory.name.trim().toLowerCase().replace(' ', '-')}}" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" class="nav-link">{{ catagory.name }}</a>
                       </li>
                     </ul>
-                    <br>
-                    <ul class="nav justify-content-end border-0 flex-column flex-lg-row">
+                    
+                    <ul class="nav justify-content-end border-0 flex-column flex-lg-row mt-5">
                         <li class="nav-item"  >
                           <i class="fa fa-envelope-o" aria-hidden="true"></i>&nbsp;Email: Uncledecorvietnam@gmail.com
                         </li>
@@ -41,7 +41,10 @@
               </div>
             </div>
       </div>
-      <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
+      <div class="d-flex order-lg-2 ml-auto">
+        <div class="dropdown d-none d-md-flex"></div>
+      </div>
+      <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0 right" data-toggle="collapse" data-target="#headerMenuCollapse">
         <span class="header-toggler-icon"></span>
       </a>
     </div>

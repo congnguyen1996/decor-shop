@@ -2,7 +2,7 @@
 <div class="my-3 my-md-5">
   <div class="container">
     <div *ngIf="authService.user.role === '0'">
-      <button class="btn btn-success" data-toggle="modal" data-target="#register-model"><i class="fa fa-plus" aria-hidden="true"></i> Create new user</button>
+      <button class="btn btn-success" data-toggle="modal" data-target="#register-model"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;New</button>
     </div>
     <div class="page-header">
       <h1 class="page-title">
@@ -26,7 +26,7 @@
                   <th class="text-center" scope="col">Username</th>
                   <th class="text-center" scope="col">Fullname</th>
                   <th class="text-center" scope="col">Role</th>
-                  <th *ngIf="authService.user.role === '0'" class="text-center" scope="col">Action</th>
+                  <th *ngIf="authService.user.role === '0'" class="text-center" scope="col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -37,8 +37,13 @@
                   <td class="text-center">{{ listRoleObj[user.role] }}</td>
                   <td *ngIf="authService.user.role === '0'" class="action text-center">
                     <div *ngIf="user.role !== '0'">
-                      <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#update-user-model" (click)="selectUser(user, 'update')">Edit</button>
-                      <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectUser(user, 'delete')">Delete</button>
+                      <div class="item-action dropdown">
+                        <a href="" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <button class="dropdown-item" data-toggle="modal" data-target="#update-user-model" (click)="selectUser(user, 'update')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Edit</button>
+                          <button class="dropdown-item" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectUser(user, 'delete')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Delete</button>
+                        </div>
+                      </div>
                     </div>
                   </td>
                 </tr>

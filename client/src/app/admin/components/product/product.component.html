@@ -3,7 +3,7 @@
     <div class="container">
       <!-- Button create new product -->
       <div>
-          <button class="btn btn-success" data-toggle="modal" data-target="#create-product-model"><i class="fa fa-plus" aria-hidden="true"></i> Create new product</button>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-product-model"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;New</button>
       </div> 
       <div class="page-header">
         <h1 class="page-title">
@@ -50,7 +50,7 @@
                       <!-- <th class="text-center" scope="col">DETAIL</th> -->
                       <th class="text-center" scope="col">CREATEBY</th>
                       <th class="text-center" scope="col">CREATEAT</th> 
-                      <th class="text-center" scope="col">ACTION</th>
+                      <th class="text-center" scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -66,9 +66,14 @@
                         <td class="text-center" data-toggle="tooltip" data-placement="bottom" title="acount: {{listUserObj[product.createby]?.username}}">{{ listUserObj[product.createby]?.fullname }}</td>
                         <td class="text-center">{{ product.createat | date:'d/M/yyyy' }}</td>
                         <td class="action text-center">
-                            <a href="/product-detail/{{product._id}}" target="_blank"><button class="btn btn-info btn-sm" data-toggle="modal" data-target="#see-product-model">See more</button></a>
-                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#update-product-model" (click)="selectProduct(product, 'edit')">Edit</button>
-                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectProduct(product, 'delete')">Delete</button>
+                          <div class="item-action dropdown">
+                            <a href="" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                              <a href="/product-detail/{{product._id}}" target="_blank"><button class="dropdown-item"><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;See more</button></a>
+                              <button class="dropdown-item" data-toggle="modal" data-target="#update-product-model" (click)="selectProduct(product, 'edit')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Edit</button>
+                              <button class="dropdown-item" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectProduct(product, 'delete')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Delete</button>
+                            </div>
+                          </div>
                         </td>
                       </tr>
                   </tbody>

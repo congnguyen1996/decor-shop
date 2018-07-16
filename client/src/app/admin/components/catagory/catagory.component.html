@@ -2,7 +2,7 @@
 <div class="my-3 my-md-5">
     <div class="container">
       <div>
-        <button class="btn btn-success" data-toggle="modal" data-target="#create-catagory-model"><i class="fa fa-plus" aria-hidden="true"></i> Create new catagory</button>
+        <button class="btn btn-success" data-toggle="modal" data-target="#create-catagory-model"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;New</button>
       </div>
       <div class="page-header">
         <h1 class="page-title">
@@ -25,7 +25,7 @@
                     <tr>
                       <th class="text-center" scope="col">No</th>
                       <th class="text-center" scope="col">Catagory Name</th>
-                      <th class="text-center" scope="col">Action</th>
+                      <th class="text-center" scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -33,8 +33,13 @@
                         <th class="text-center" scope="row">{{ i*page + 1 }}</th>
                         <td class="text-center">{{ catagory.name }}</td>
                         <td class="action text-center">
-                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#update-catagory-model" (click)="selectCatagory(catagory, 'edit')">Edit</button>
-                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectCatagory(catagory, 'delete')">Delete</button>
+                            <div class="item-action dropdown">
+                              <a href="" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>
+                              <div class="dropdown-menu dropdown-menu-right">
+                                <button class="dropdown-item" data-toggle="modal" data-target="#update-catagory-model" (click)="selectCatagory(catagory, 'edit')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Edit</button>
+                                <button class="dropdown-item" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectCatagory(catagory, 'delete')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Delete</button>
+                              </div>
+                            </div>
                         </td>
                       </tr>
                   </tbody>
