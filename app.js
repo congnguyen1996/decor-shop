@@ -20,8 +20,11 @@ const app = express();
 
 // cors
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://uncledecor.com");
-  res.header("Access-Control-Allow-Origin", "http://67.209.127.191");
+  const allowedOrigins = ['http://uncledecor.com', 'http://67.209.127.191'];
+  var origin = req.headers.origin;
+  if(allowedOrigins.indexOf(origin) > -1){
+       res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
