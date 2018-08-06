@@ -1275,6 +1275,7 @@ pre code {
   .order-lg-2 {
     -ms-flex-order: 2;
     order: 2;
+    margin-left: 12rem;
   }
   .order-lg-3 {
     -ms-flex-order: 3;
