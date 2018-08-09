@@ -4,6 +4,7 @@ import { ProductService } from '../../../services/product.service';
 import { CatagoryService } from '../../../services/catagory.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-products',
@@ -35,6 +36,7 @@ export class ProductsComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private catagoryService: CatagoryService,
+    private titleService: Title,
     public router: Router
   ) {
     this.getListCatagory();
@@ -43,16 +45,20 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.getListCatagory();
     this.getListProduct();
+    this.filterRoute();
+  }
+
+  filterRoute() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd))
       .subscribe((route: NavigationEnd) => {
         const params = route.url.split('/');
         this.filterInput.filterByCatagory = params[params.length - 1];
+        this.titleService.setTitle(this.filterInput.filterByCatagory.replace(/^\w/, c => c.toUpperCase()) + ' | Decor Shop');
         this.page = 1;
         this.filterByCatagory();
     });
   }
-
 
   // Function to get products with option of this
   async getListProduct() {
