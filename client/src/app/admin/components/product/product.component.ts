@@ -186,6 +186,9 @@ export class ProductComponent implements OnInit {
       detail: this.formCreateProduct.get('detail').value,
       images: null
     };
+    if (!this.checkFilesUploadSize(this.filesToUpload)) {
+      return this.refreshFormProduct();
+    }
     try {
       const responseImages = await this.fileUploadService.uploadProductImages(this.filesToUpload);
       product.images = responseImages.data;
@@ -265,6 +268,9 @@ export class ProductComponent implements OnInit {
     };
     try {
       if (this.filesToUpload.length > 0) {
+        if (!this.checkFilesUploadSize(this.filesToUpload)) {
+          return this.refreshFormProduct();
+        }
         const responseImages = await this.fileUploadService.uploadProductImages(this.filesToUpload);
         product.images = [...product.images, ...responseImages.data];
       }
@@ -376,5 +382,16 @@ export class ProductComponent implements OnInit {
 
   removeFileImage(index) {
     this.selectedProduct.images.splice(index, 1);
+  }
+
+  checkFilesUploadSize(files) {
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].size >= Math.pow(1024, 2)) { // >= 1MB
+        this.messageClass = 'alert alert-danger alert-dismissible';
+        this.message = 'Ảnh quá lớn. Xin hãy chọn ảnh dưới 1MB';
+        return false;
+      }
+    }
+    return true;
   }
 }
