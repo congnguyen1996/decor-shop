@@ -1,11 +1,11 @@
 <div class="my-3 my-md-5" id="list-product">
   <div class="container">
-    <div *ngIf="total > 0" class="page-header">
+    <div class="page-header">
       <h1 class="page-title">
         Products
       </h1>
       <div *ngIf="page < pages" class="page-subtitle">{{ limit*(page-1) + 1 }} - {{ limit*page }} of {{ total }} products</div>
-      <div *ngIf="page == pages" class="page-subtitle">{{ limit*(page-1) + 1 }} - {{ total }} of {{ total }} products</div>
+      <div *ngIf="page == pages && total > 0" class="page-subtitle">{{ limit*(page-1) + 1 }} - {{ total }} of {{ total }} products</div>
       <div class="page-options d-flex">
         <select [(ngModel)]="sortInput.sortByDate" class="form-control custom-select w-auto ml-2" (change)="sortByDate()">
           <option value="asc">Newest</option>
