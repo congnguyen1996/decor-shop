@@ -65,7 +65,7 @@ export class ProductComponent implements OnInit {
     this.getListCatagory();
     this.getListUser();
     this.createFormCreateProduct();
-    this.createFormUpdateProduct(null, null, null, 'DOLLAR', null, null);
+    this.createFormUpdateProduct(null, null, null, 'VND', null, null);
   }
 
   // Function to create form update product
@@ -102,7 +102,7 @@ export class ProductComponent implements OnInit {
         Validators.maxLength(100)
       ])],
       catagoryid: [null, Validators.required],
-      priceunit: ['DOLLAR', Validators.required],
+      priceunit: ['VND', Validators.required],
       pricevalue: ['', Validators.required],
       detail: ['', Validators.required]
     });

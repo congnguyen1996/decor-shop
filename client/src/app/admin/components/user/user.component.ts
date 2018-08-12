@@ -29,7 +29,6 @@ export class UserComponent implements OnInit {
 
   selectedUser;
   listRole = [
-    {rolekey: '0', rolevalue: 'Cụ tổ'},
     {rolekey: '1', rolevalue: 'Bố bọn trẻ'},
     {rolekey: '2', rolevalue: 'Mẹ bọn trẻ'},
     {rolekey: '3', rolevalue: 'Bọn trẻ con'}
@@ -72,7 +71,7 @@ export class UserComponent implements OnInit {
         Validators.maxLength(35),
         this.validPassword
       ])],
-      role: ['0', Validators.required],
+      role: ['1', Validators.required],
     });
   }
 

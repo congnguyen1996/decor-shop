@@ -5,7 +5,6 @@ const mongoose = require('mongoose'); // Node Tool for MongoDB
 mongoose.Promise = global.Promise; // Configure Mongoose Promises
 const Schema = mongoose.Schema; // Import Schema from Mongoose
 const bcrypt = require('bcrypt-nodejs'); // A native JS bcrypt library for NodeJS
-const saltRounds = 7;
 const mongoosePaginate = require('mongoose-paginate');
 
 // Validate Function to check username length
@@ -108,7 +107,7 @@ userSchema.pre('save', function (next) {
     return next();
   }
   // Apply encryption
-  bcrypt.hash(this.password, saltRounds, (err, hash) => {
+  bcrypt.hash(this.password, null, null, (err, hash) => {
     if (err) return next(err); // Ensure no errors
     this.password = hash; // Apply encryption to password
     next(); // Exit middleware

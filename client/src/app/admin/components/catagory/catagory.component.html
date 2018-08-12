@@ -37,7 +37,7 @@
                               <a href="" data-toggle="dropdown" class="icon"><i class="fe fe-more-vertical"></i></a>
                               <div class="dropdown-menu dropdown-menu-right">
                                 <button class="dropdown-item" data-toggle="modal" data-target="#update-catagory-model" (click)="selectCatagory(catagory, 'edit')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Edit</button>
-                                <button class="dropdown-item" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectCatagory(catagory, 'delete')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Delete</button>
+                                <button *ngIf="authService.user.role === '0'" class="dropdown-item" data-toggle="modal" data-target="#delete-confirm-model" (click)="selectCatagory(catagory, 'delete')"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Delete</button>
                               </div>
                             </div>
                         </td>

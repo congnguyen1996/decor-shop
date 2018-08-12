@@ -41,7 +41,7 @@ export class AdminNavbarComponent implements OnInit {
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/admin/login']);
   }
 
   createFormUpdatePw() {
@@ -103,6 +103,11 @@ export class AdminNavbarComponent implements OnInit {
         return { 'passwordNotChange': true }; // Return as error: do not match
       }
     };
+  }
+
+  removeMessage() {
+    this.message = null;
+    this.messageClass = null;
   }
 
   async onSubmitUpdatePw() {

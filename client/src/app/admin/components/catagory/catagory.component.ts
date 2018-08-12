@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CatagoryService } from '../../../services/catagory.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-admin-catagory',
@@ -30,7 +31,8 @@ export class CatagoryComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private catagoryService: CatagoryService
+    private catagoryService: CatagoryService,
+    private authService: AuthService
   ) {
   }
 

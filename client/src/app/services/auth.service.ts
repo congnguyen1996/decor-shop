@@ -21,8 +21,13 @@ export class AuthService {
   }
 
   loadUser() {
-    if (localStorage.getItem(btoa('user'))) {
-      this.user = JSON.parse(localStorage.getItem(btoa('user')));
+    const user = localStorage.getItem(btoa('user'));
+    if (user) {
+      try {
+        this.user = JSON.parse(user);
+      } catch (error) {
+        console.log('>> login');
+      }
     }
   }
 
@@ -87,6 +92,9 @@ export class AuthService {
 
   // Function to check loggedIn
   async loggedIn() {
+    if (!this.user) {
+      return false;
+    }
     this.createAuthenticationHeaders();
     try {
       const response = await this.utilService
